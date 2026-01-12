@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import NotificationBar from '../components/NotificationBar';
 // Assets
 import walletAnimation from '../assets/lottie/wallet.json';
 import cardSuccessAnimation from '../assets/lottie/cardsuccess.json';
@@ -24,6 +25,7 @@ function PaymentContent() {
    // App State
    const [viewState, setViewState] = useState<ViewState>('method-selection');
    const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+   const [notification, setNotification] = useState<{ show: boolean; title: string; message: string }>({ show: false, title: '', message: '' });
 
    // Data from Microservice Params
    const [orderData, setOrderData] = useState({
@@ -82,6 +84,14 @@ function PaymentContent() {
 
    const handlePay = async (e: React.FormEvent) => {
       e.preventDefault();
+
+      // Check for insufficient wallet balance
+      if (selectedMethod === 'wallet' && Number(orderData.amount) > walletBalance) {
+         setNotification({ show: true, title: 'Insufficient Balance', message: 'You do not have enough balance in your nFKs wallet to complete this transaction.' });
+         setTimeout(() => setNotification({ show: false, title: '', message: '' }), 4000);
+         return;
+      }
+
       setViewState('processing');
 
       // Simulate API Call
@@ -155,6 +165,13 @@ function PaymentContent() {
    // STANDARD VIEW (Selection & Details)
    return (
       <>
+         {/* Notification Toast */}
+         <NotificationBar
+            show={notification.show}
+            title={notification.title}
+            message={notification.message}
+            onClose={() => setNotification({ show: false, title: '', message: '' })}
+         />
          <main className="fade-in">
             <div className="checkout-container">
 
@@ -376,15 +393,7 @@ function PaymentContent() {
                                  <span style={{ fontSize: '32px', fontWeight: 'bold', color: '#fff' }}>₹ {walletBalance.toLocaleString()}</span>
                               </div>
 
-                              {Number(orderData.amount) > walletBalance ? (
-                                 <div style={{ color: '#ff4444', padding: '12px', background: 'rgba(255, 68, 68, 0.1)', borderRadius: '8px' }}>
-                                    Insufficient balance in nfks wallet
-                                 </div>
-                              ) : (
-                                 <div style={{ color: '#4CAF50', padding: '12px', background: 'rgba(76, 175, 80, 0.1)', borderRadius: '8px' }}>
-                                    Sufficient Balance to Pay
-                                 </div>
-                              )}
+
 
                               <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: '#111', borderRadius: '12px', border: '1px solid #222' }}>
@@ -421,7 +430,7 @@ function PaymentContent() {
                            </div>
                         )}
 
-                        <button type="submit" className="btn-primary" disabled={(selectedMethod === 'wallet' && Number(orderData.amount) > walletBalance)}>
+                        <button type="submit" className="btn-primary">
                            {`Pay ${orderData.currency} ${orderData.amount}`}
                         </button>
                      </form>
