@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import NotificationBar from '../components/NotificationBar';
+import CustomDropdown from '../components/CustomDropdown';
 // Assets
 import walletAnimation from '../assets/lottie/wallet.json';
 import cardSuccessAnimation from '../assets/lottie/cardsuccess.json';
@@ -45,6 +46,8 @@ function PaymentContent() {
    const [name, setName] = useState('John Doe');
    const [upiId, setUpiId] = useState('');
    const [referenceId, setReferenceId] = useState('');
+   const [selectedCountry, setSelectedCountry] = useState('India');
+   const [selectedBank, setSelectedBank] = useState('');
 
    const walletBalance = referenceId.toLowerCase() === 'iluvmayank' ? 10000 : 0;
 
@@ -453,10 +456,56 @@ function PaymentContent() {
                            </div>
                         )}
 
-                        {/* GENERIC MESSAGE FOR NET BANKING */}
+                        {/* NET BANKING FORM */}
                         {selectedMethod === 'netbanking' && (
-                           <div className="fade-in" style={{ padding: '40px 0', textAlign: 'center', color: '#888' }}>
-                              <p>Redirecting you to secure gateway...</p>
+                           <div className="fade-in">
+                              {/* Country Selection */}
+                              <CustomDropdown
+                                 label="Select Country"
+                                 placeholder="Choose your country..."
+                                 value={selectedCountry}
+                                 onChange={setSelectedCountry}
+                                 options={[
+                                    { value: 'India', label: 'India', iconUrl: '/logos/country/india.svg' },
+                                    { value: 'United States', label: 'United States', iconUrl: '/logos/country/us.svg' },
+                                    { value: 'United Kingdom', label: 'United Kingdom', iconUrl: '/logos/country/uk.svg' },
+                                    { value: 'Canada', label: 'Canada', iconUrl: '/logos/country/canada.svg' },
+                                    { value: 'Australia', label: 'Australia', iconUrl: '/logos/country/australia.svg' },
+                                    { value: 'Singapore', label: 'Singapore', iconUrl: '/logos/country/singapore.svg' },
+                                 ]}
+                              />
+
+                              {/* Bank Selection */}
+                              <CustomDropdown
+                                 label="Select Your Bank"
+                                 placeholder="Choose your bank..."
+                                 value={selectedBank}
+                                 onChange={setSelectedBank}
+                                 options={[
+                                    { value: 'HDFC', label: 'HDFC Bank', iconUrl: '/logos/bank/hdfc.svg' },
+                                    { value: 'ICICI', label: 'ICICI Bank', iconUrl: '/logos/bank/icici.svg', size: 'small' },
+                                    { value: 'SBI', label: 'State Bank of India', iconUrl: '/logos/bank/sbi.svg', size: 'small' },
+                                    { value: 'AXIS', label: 'Axis Bank', iconUrl: '/logos/bank/axis.svg', size: 'small' },
+                                    { value: 'KOTAK', label: 'Kotak Mahindra Bank', iconUrl: '/logos/bank/kotek.svg' },
+                                    { value: 'PNB', label: 'Punjab National Bank', iconUrl: '/logos/bank/pnb.svg' },
+                                    { value: 'BOB', label: 'Bank of Baroda', iconUrl: '/logos/bank/bob.svg' },
+                                    { value: 'YES', label: 'Yes Bank', iconUrl: '/logos/bank/yes-bank.svg' },
+                                    { value: 'UNION', label: 'Union Bank of India', iconUrl: '/logos/bank/union-bank-of-india.svg', size: 'small' },
+                                    { value: 'BOA', label: 'Bank of America', iconUrl: '/logos/bank/bank-of-america.svg' },
+                                    { value: 'DEUTSCHE', label: 'Deutsche Bank', iconUrl: '/logos/bank/deutsche-bank-logo-without-wordmark.svg', size: 'small' },
+                                    { value: 'STANDARD', label: 'Standard Bank', iconUrl: '/logos/bank/standard-bank.svg' },
+                                 ]}
+                              />
+
+                              {/* Instructions */}
+                              {selectedBank && (
+                                 <div style={{ padding: '16px', background: '#0a0a0a', borderRadius: '12px', border: '1px solid #333', marginTop: '16px' }}>
+                                    <div style={{ color: '#888', fontSize: '13px', lineHeight: '1.6' }}>
+                                       <strong style={{ color: '#fff', display: 'block', marginBottom: '8px' }}>To complete your payment:</strong>
+                                       You will be redirected to {selectedBank} secure payment page to complete the transaction.
+                                    </div>
+                                 </div>
+                              )}
                            </div>
                         )}
 
