@@ -4,20 +4,23 @@ import React, { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
-// Import the local JSON file. 
-// Ensure this path is correct based on your project structure: src/assets/lottie/wallet.json
+// Assets
 import walletAnimation from '../assets/lottie/wallet.json';
+import cardSuccessAnimation from '../assets/lottie/cardsuccess.json';
+import processingAnimation from '../assets/lottie/proccessing.json';
+import successAnimation from '../assets/lottie/success.json';
+import failedAnimation from '../assets/lottie/failed.json';
 
 // Dynamic import for lottie-react to avoid SSR issues
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
+
+type ViewState = 'method-selection' | 'details' | 'processing' | 'success' | 'failed';
 
 function PaymentContent() {
    const searchParams = useSearchParams();
 
    // App State
-   const [loading, setLoading] = useState(false);
-   const [success, setSuccess] = useState(false);
-   const [step, setStep] = useState<'method-selection' | 'details'>('method-selection');
+   const [viewState, setViewState] = useState<ViewState>('method-selection');
    const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
 
    // Data from Microservice Params
@@ -71,31 +74,54 @@ function PaymentContent() {
 
    const handleMethodSelect = (method: string) => {
       setSelectedMethod(method);
-      setStep('details');
+      setViewState('details');
    };
 
    const handlePay = async (e: React.FormEvent) => {
       e.preventDefault();
-      setLoading(true);
+      setViewState('processing');
 
       // Simulate API Call
       setTimeout(() => {
-         setLoading(false);
-         setSuccess(true);
-         console.log(`Payment Success via ${selectedMethod}`);
-      }, 2500);
+         // Simple logic for success/fail demo
+         // For now always success unless name is 'fail'
+         if (name.toLowerCase() === 'fail' || name.toLowerCase() === 'failed') {
+            setViewState('failed');
+         } else {
+            setViewState('success');
+         }
+      }, 4000);
    };
 
-   if (success) {
+   // --- FULL PAGE VIEWS ---
+
+   // 1. Processing View
+   if (viewState === 'processing') {
       return (
          <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
-            <div className="checkout-container" style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column', background: '#111827', padding: '60px', textAlign: 'center' }}>
-               <div style={{ padding: '30px', background: '#fff', borderRadius: '50%', marginBottom: '24px' }}>
-                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                     <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
+               <div style={{ width: '800px', height: '800px', marginBottom: selectedMethod === 'card' ? '-100px' : '-250px', padding: selectedMethod === 'card' ? '30px' : '0px' }}>
+                  <Lottie
+                     animationData={selectedMethod === 'card' ? cardSuccessAnimation : processingAnimation}
+                     loop={true}
+                  />
                </div>
-               <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold' }}>Payment Accepted</h1>
+               <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '12px', color: '#fff' }}>Processing Transaction</h2>
+               <p style={{ color: '#94a3b8' }}>Please do not close this window...</p>
+            </div>
+         </main>
+      );
+   }
+
+   // 2. Success View
+   if (viewState === 'success') {
+      return (
+         <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
+               <div style={{ width: '800px', height: '800px', marginBottom: '-250px' }}>
+                  <Lottie animationData={successAnimation} loop={false} />
+               </div>
+               <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Payment Accepted</h1>
                <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Your {orderData.product} is on its way!</p>
                <button className="btn-primary" style={{ maxWidth: '300px' }} onClick={() => window.location.href = 'https://ayscroll.com/dashboard'}>
                   Return to Merchant
@@ -105,6 +131,25 @@ function PaymentContent() {
       );
    }
 
+   // 3. Failed View
+   if (viewState === 'failed') {
+      return (
+         <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
+               <div style={{ width: '800px', height: '800px', marginBottom: '-250px' }}>
+                  <Lottie animationData={failedAnimation} loop={false} />
+               </div>
+
+               <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Something went wrong. Please try again.</p>
+               <button className="btn-primary" style={{ maxWidth: '300px', background: '#333' }} onClick={() => setViewState('details')}>
+                  Try Again
+               </button>
+            </div>
+         </main>
+      );
+   }
+
+   // STANDARD VIEW (Selection & Details)
    return (
       <main className="fade-in">
          <div className="checkout-container">
@@ -118,7 +163,7 @@ function PaymentContent() {
                   <h2 style={{ fontSize: '24px', fontWeight: 'bold' }}>nFKs Pay</h2>
                </div>
 
-               {step === 'method-selection' && (
+               {viewState === 'method-selection' && (
                   <div className="fade-in">
                      <h3 style={{ fontSize: '18px', marginBottom: '20px', color: '#fff' }}>Select Payment Method</h3>
                      <div className="method-grid">
@@ -146,9 +191,9 @@ function PaymentContent() {
                   </div>
                )}
 
-               {step === 'details' && (
+               {viewState === 'details' && (
                   <form onSubmit={handlePay} className="fade-in" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                     <button type="button" className="btn-back" onClick={() => setStep('method-selection')}>
+                     <button type="button" className="btn-back" onClick={() => setViewState('method-selection')}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                         Change Method
                      </button>
@@ -333,8 +378,8 @@ function PaymentContent() {
                         </div>
                      )}
 
-                     <button type="submit" className="btn-primary" disabled={loading || (selectedMethod === 'wallet' && Number(orderData.amount) > walletBalance)}>
-                        {loading ? <div className="spinner"></div> : `Pay ${orderData.currency} ${orderData.amount}`}
+                     <button type="submit" className="btn-primary" disabled={(selectedMethod === 'wallet' && Number(orderData.amount) > walletBalance)}>
+                        {`Pay ${orderData.currency} ${orderData.amount}`}
                      </button>
                   </form>
                )}
