@@ -10,6 +10,8 @@ import cardSuccessAnimation from '../assets/lottie/cardsuccess.json';
 import processingAnimation from '../assets/lottie/proccessing.json';
 import successAnimation from '../assets/lottie/success.json';
 import failedAnimation from '../assets/lottie/failed.json';
+import qrAnimation from '../assets/lottie/qr.json';
+import bankAnimation from '../assets/lottie/bank.json';
 
 // Dynamic import for lottie-react to avoid SSR issues
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
@@ -389,7 +391,7 @@ function PaymentContent() {
             <div className="right-side">
 
                {/* The Ticket Container */}
-               <div className="ticket" style={{ paddingTop: selectedMethod === 'wallet' ? '200px' : undefined }}>
+               <div className="ticket" style={{ paddingTop: (selectedMethod === 'wallet' || selectedMethod === 'upi' || selectedMethod === 'netbanking') ? '280px' : undefined }}>
 
                   {/* Floating Vertical Card - Only show on Card Method or Default */}
                   {(selectedMethod === 'card' || selectedMethod === null) && (
@@ -423,19 +425,17 @@ function PaymentContent() {
                      </div>
                   )}
 
-                  {/* Generic Logo/Icon for UPI */}
-                  {selectedMethod === 'upi' && (
-                     <div style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '120px', height: '120px', background: '#fff', borderRadius: '50%', border: '4px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', zIndex: 20 }}>
-                        <div style={{ position: 'relative', width: '80%', height: '80%' }}>
-                           <Image src="/upi_logo.png" alt="UPI" fill style={{ objectFit: 'contain' }} />
-                        </div>
-                     </div>
-                  )}
-
-                  {/* Floating Wallet Lottie */}
-                  {selectedMethod === 'wallet' && (
-                     <div style={{ position: 'absolute', top: '-90px', left: '50%', transform: 'translateX(-50%)', width: '250px', height: '250px', zIndex: 20 }}>
-                        <Lottie animationData={walletAnimation} loop={true} />
+                  {/* Floating Lottie for UPI, Netbanking, Wallet */}
+                  {(selectedMethod === 'upi' || selectedMethod === 'netbanking' || selectedMethod === 'wallet') && (
+                     <div style={{ position: 'absolute', top: selectedMethod === 'wallet' ? '-200px' : '-220px', left: '50%', transform: 'translateX(-50%)', width: selectedMethod === 'wallet' ? '400px' : '500px', height: selectedMethod === 'wallet' ? '450px' : '500px', zIndex: 20 }}>
+                        <Lottie
+                           animationData={
+                              selectedMethod === 'upi' ? qrAnimation :
+                                 selectedMethod === 'netbanking' ? bankAnimation :
+                                    walletAnimation
+                           }
+                           loop={true}
+                        />
                      </div>
                   )}
 
