@@ -1,0 +1,327 @@
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --primary: #ffffff; 
+  --primary-hover: #e5e5e5;
+  --surface: #111111;
+  --border: #333333;
+  --charcoal-black: #111111; 
+  --ticket-bg: #1c1c1c;
+  --text-secondary: #888888;
+}
+
+body {
+  color: var(--foreground);
+  background: #000000;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Main Modal Container */
+.checkout-container {
+  display: flex;
+  width: 900px;
+  max-width: 95vw;
+  background: var(--surface);
+  border-radius: 24px;
+  overflow: visible; 
+  box-shadow: 0 0 0 1px #333, 0 50px 100px -20px rgba(0, 0, 0, 1);
+  min-height: 680px; 
+}
+
+/* Left Side (Form) */
+.left-side {
+  flex: 1.4;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  background: #111111;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+}
+
+/* Payment Methods Grid */
+.method-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.method-card {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.method-card:hover {
+  background: #1a1a1a;
+  border-color: #555;
+  transform: translateY(-2px);
+}
+
+.method-card.selected {
+  background: #1c1c1c;
+  border-color: #fff;
+  box-shadow: 0 0 0 1px #fff;
+}
+
+.method-icon {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+}
+
+.method-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+}
+
+.method-desc {
+  font-size: 12px;
+  color: #666;
+  text-align: left;
+}
+
+/* Back Button */
+.btn-back {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  padding: 0;
+  transition: color 0.2s;
+  width: fit-content;
+}
+
+.btn-back:hover {
+  color: #fff;
+}
+
+
+/* Right Side (The Ticket Container Area) */
+.right-side {
+  flex: 1;
+  background: #050505; /* Pure black contrast for the ticket area */
+  padding: 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid var(--border);
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
+  overflow: visible; 
+}
+
+/* The Ticket Itself */
+.ticket {
+  width: 100%;
+  max-width: 320px;
+  background: #1c1c1c;
+  border-radius: 20px;
+  position: relative;
+  padding: 24px;
+  padding-top: 280px; /* MASSIVE padding to push text below the card */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #333;
+}
+
+/* Cutout Circles */
+.ticket::before, .ticket::after {
+  content: '';
+  position: absolute;
+  bottom: 110px; 
+  width: 30px;
+  height: 30px;
+  background: #050505; 
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.ticket::before { left: -15px; }
+.ticket::after { right: -15px; }
+
+/* Dashed Line */
+.ticket-divider {
+  border-top: 2px dashed #444;
+  margin-top: auto;
+  margin-bottom: 24px; 
+  height: 1px;
+  width: 100%;
+}
+
+/* Floating Card Visual */
+.floating-card {
+  position: absolute;
+  top: -40px; /* Less floating distance so it stays grounded */
+  left: 0;
+  right: 0;
+  margin: 0 auto; /* Reliable horizontal centering */
+  width: 220px; /* Slightly narrower */
+  height: 310px; /* Fixed height */
+  background: #222; /* Dark card background */
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid #444;
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 20;
+}
+
+/* White light effect at top of card (monochrome) */
+.floating-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 4px;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 15px 1px rgba(255, 255, 255, 0.3);
+  opacity: 0.6;
+}
+
+
+/* Elements inside the card */
+.fc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.fc-chip {
+  width: 40px;
+  height: 50px;
+  background: linear-gradient(135deg, #555 0%, #333 100%);
+  border-radius: 6px;
+  border: 1px solid #666;
+}
+
+.fc-number {
+  font-family: monospace;
+  font-size: 20px;
+  color: #fff;
+  letter-spacing: 2px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.fc-name {
+  color: #bbb;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.fc-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+/* Receipt Rows inside Ticket */
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #888;
+}
+
+.ticket-val {
+  color: #fff;
+  font-weight: 500;
+  text-align: right;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ticket Total */
+.ticket-total-label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.ticket-total-amount {
+  font-size: 32px;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Inputs */
+.input-group { margin-bottom: 24px; }
+.input-wrapper { position: relative; display: flex; align-items: center; }
+.section-label { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+.sub-label { color: #666; font-size: 12px; margin-bottom: 10px; display: block; }
+.input-field { width: 100%; padding: 14px 16px; background: #0a0a0a; border: 1px solid #333; border-radius: 12px; color: #fff; font-size: 15px; outline: none; font-family: 'Inter', sans-serif; height: 50px; transition: all 0.2s }
+.input-field:focus { border-color: #fff; }
+.input-icon { position: absolute; right: 16px; color: #666; }
+
+/* Primary Button (Monochrome) */
+.btn-primary { 
+  width: 100%; 
+  padding: 18px; 
+  background: #ffffff; 
+  color: #000000; 
+  border: none; 
+  border-radius: 12px; 
+  font-size: 16px; 
+  font-weight: 600; 
+  cursor: pointer; 
+  margin-top: auto;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.row { display: flex; gap: 20px; }
+.col { flex: 1; }
+
+.fade-in { animation: fadeIn 0.5s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Spinner */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0,0,0,0.1);
+  border-radius: 50%;
+  border-top-color: #000;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
