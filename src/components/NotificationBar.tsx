@@ -8,17 +8,21 @@ interface NotificationBarProps {
     title: string;
     message: string;
     onClose: () => void;
+    type?: 'success' | 'error';
 }
 
-export default function NotificationBar({ show, title, message, onClose }: NotificationBarProps) {
+export default function NotificationBar({ show, title, message, onClose, type = 'error' }: NotificationBarProps) {
+    const borderColor = type === 'success' ? '#4CAF50' : '#ff4444';
+    const logoBackground = type === 'success' ? '#2a2a2a' : '#2a2a2a';
+
     return (
         <div
             style={{
                 position: 'fixed',
                 top: '20px',
-                left: show ? '20px' : '-450px',
+                right: show ? '20px' : '-450px',
                 zIndex: 9999,
-                transition: 'left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                transition: 'right 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
                 maxWidth: '420px',
                 width: '100%'
             }}
@@ -36,7 +40,7 @@ export default function NotificationBar({ show, title, message, onClose }: Notif
                     overflow: 'hidden'
                 }}
             >
-                {/* Gradient accent bar on left */}
+                {/* Red accent bar on left */}
                 <div
                     style={{
                         position: 'absolute',
@@ -44,7 +48,7 @@ export default function NotificationBar({ show, title, message, onClose }: Notif
                         top: 0,
                         bottom: 0,
                         width: '4px',
-                        background: 'linear-gradient(180deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%)'
+                        background: borderColor
                     }}
                 />
 
@@ -54,12 +58,11 @@ export default function NotificationBar({ show, title, message, onClose }: Notif
                         width: '40px',
                         height: '40px',
                         borderRadius: '8px',
-                        background: 'linear-gradient(135deg, #ff006e 0%, #8338ec 100%)',
+                        background: '#2a2a2a',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0,
-                        boxShadow: '0 4px 12px rgba(255, 0, 110, 0.3)',
                         marginLeft: '8px'
                     }}
                 >

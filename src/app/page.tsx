@@ -25,7 +25,7 @@ function PaymentContent() {
    // App State
    const [viewState, setViewState] = useState<ViewState>('method-selection');
    const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
-   const [notification, setNotification] = useState<{ show: boolean; title: string; message: string }>({ show: false, title: '', message: '' });
+   const [notification, setNotification] = useState<{ show: boolean; title: string; message: string; type?: 'success' | 'error' }>({ show: false, title: '', message: '', type: 'error' });
 
    // Data from Microservice Params
    const [orderData, setOrderData] = useState({
@@ -69,6 +69,17 @@ function PaymentContent() {
       }
    }, [searchParams]);
 
+   // Show notification when success or failed page loads
+   useEffect(() => {
+      if (viewState === 'success') {
+         setNotification({ show: true, title: 'Payment Successful', message: 'Your payment has been processed successfully.', type: 'success' });
+         setTimeout(() => setNotification({ show: false, title: '', message: '', type: 'error' }), 5000);
+      } else if (viewState === 'failed') {
+         setNotification({ show: true, title: 'Payment Failed', message: 'Something went wrong with your payment. Please try again.', type: 'error' });
+         setTimeout(() => setNotification({ show: false, title: '', message: '', type: 'error' }), 5000);
+      }
+   }, [viewState]);
+
 
    const handleCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value.replace(/[^0-9]/g, '');
@@ -87,8 +98,8 @@ function PaymentContent() {
 
       // Check for insufficient wallet balance
       if (selectedMethod === 'wallet' && Number(orderData.amount) > walletBalance) {
-         setNotification({ show: true, title: 'Insufficient Balance', message: 'You do not have enough balance in your nFKs wallet to complete this transaction.' });
-         setTimeout(() => setNotification({ show: false, title: '', message: '' }), 4000);
+         setNotification({ show: true, title: 'Insufficient Balance', message: 'You do not have enough balance in your nFKs wallet to complete this transaction.', type: 'error' });
+         setTimeout(() => setNotification({ show: false, title: '', message: '', type: 'error' }), 4000);
          return;
       }
 
@@ -129,36 +140,54 @@ function PaymentContent() {
    // 2. Success View
    if (viewState === 'success') {
       return (
-         <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
-               <div style={{ width: '800px', height: '800px', marginBottom: '-250px' }}>
-                  <Lottie animationData={successAnimation} loop={false} />
+         <>
+            <NotificationBar
+               show={notification.show}
+               title={notification.title}
+               message={notification.message}
+               type={notification.type}
+               onClose={() => setNotification({ show: false, title: '', message: '', type: 'error' })}
+            />
+            <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
+               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
+                  <div style={{ width: '800px', height: '800px', marginBottom: '-250px' }}>
+                     <Lottie animationData={successAnimation} loop={false} />
+                  </div>
+                  <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Payment Accepted</h1>
+                  <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Your {orderData.product} is on its way!</p>
+                  <button className="btn-primary" style={{ maxWidth: '300px' }} onClick={() => window.location.href = 'https://ayscroll.com/dashboard'}>
+                     Return to Merchant
+                  </button>
                </div>
-               <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Payment Accepted</h1>
-               <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Your {orderData.product} is on its way!</p>
-               <button className="btn-primary" style={{ maxWidth: '300px' }} onClick={() => window.location.href = 'https://ayscroll.com/dashboard'}>
-                  Return to Merchant
-               </button>
-            </div>
-         </main>
+            </main>
+         </>
       );
    }
 
    // 3. Failed View
    if (viewState === 'failed') {
       return (
-         <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
-               <div style={{ width: '800px', height: '800px', marginBottom: '-250px' }}>
-                  <Lottie animationData={failedAnimation} loop={false} />
-               </div>
+         <>
+            <NotificationBar
+               show={notification.show}
+               title={notification.title}
+               message={notification.message}
+               type={notification.type}
+               onClose={() => setNotification({ show: false, title: '', message: '', type: 'error' })}
+            />
+            <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
+               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
+                  <div style={{ width: '800px', height: '800px', marginBottom: '-250px' }}>
+                     <Lottie animationData={failedAnimation} loop={false} />
+                  </div>
 
-               <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Something went wrong. Please try again.</p>
-               <button className="btn-primary" style={{ maxWidth: '300px', background: '#333' }} onClick={() => setViewState('details')}>
-                  Try Again
-               </button>
-            </div>
-         </main>
+                  <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Something went wrong. Please try again.</p>
+                  <button className="btn-primary" style={{ maxWidth: '300px', background: '#333' }} onClick={() => setViewState('details')}>
+                     Try Again
+                  </button>
+               </div>
+            </main>
+         </>
       );
    }
 
@@ -170,7 +199,8 @@ function PaymentContent() {
             show={notification.show}
             title={notification.title}
             message={notification.message}
-            onClose={() => setNotification({ show: false, title: '', message: '' })}
+            type={notification.type}
+            onClose={() => setNotification({ show: false, title: '', message: '', type: 'error' })}
          />
          <main className="fade-in">
             <div className="checkout-container">
@@ -431,7 +461,7 @@ function PaymentContent() {
                         )}
 
                         <button type="submit" className="btn-primary">
-                           {`Pay ${orderData.currency} ${orderData.amount}`}
+                           Proceed
                         </button>
                      </form>
                   )}
