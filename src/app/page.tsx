@@ -239,12 +239,58 @@ function PaymentContent() {
                      {selectedMethod === 'upi' && (
                         <div className="fade-in">
                            <div style={{ textAlign: 'center', marginBottom: '24px', padding: '20px', background: '#0a0a0a', borderRadius: '16px', border: '1px solid #333' }}>
-                              <div style={{ width: '150px', height: '150px', background: '#fff', margin: '0 auto 16px', padding: '10px' }}>
-                                 {/* Placeholder QR */}
-                                 <div style={{ width: '100%', height: '100%', background: '#000' }}></div>
+                              <div style={{ width: '200px', height: '200px', background: '#fff', margin: '0 auto 16px', padding: '10px' }}>
+                                 <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                    <Image src="/qr.jpeg" alt="Payment QR" fill style={{ objectFit: 'contain' }} />
+                                 </div>
                               </div>
                               <span style={{ fontSize: '14px', color: '#888' }}>Scan with any UPI App</span>
                            </div>
+
+                           {/* Pay with App Grid */}
+                           <div style={{ marginBottom: '24px' }}>
+                              <div className="section-label" style={{ marginBottom: '12px', color: '#888', fontSize: '14px' }}>Pay with App</div>
+                              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                                 {[
+                                    { name: 'GPay', icon: '/logos/gpay.svg' },
+                                    { name: 'PhonePe', icon: '/logos/phonepe.svg' },
+                                    { name: 'Paytm', icon: '/logos/paytm.svg' },
+                                    { name: 'Apple Pay', icon: '/logos/apple.svg' },
+                                    { name: 'Super.money', icon: '/logos/supermoney.svg' },
+                                 ].map((app) => (
+                                    <div
+                                       key={app.name}
+                                       onClick={() => console.log(`Selected ${app.name}`)}
+                                       style={{
+                                          width: '50px',
+                                          height: '50px',
+                                          background: 'transparent',
+                                          borderRadius: '12px',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                          cursor: 'pointer',
+                                          transition: 'transform 0.1s',
+                                          padding: '8px'
+                                       }}
+                                       onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                                       onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                    >
+                                       <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                          <Image
+                                             src={app.icon}
+                                             alt={app.name}
+                                             fill
+                                             style={{
+                                                objectFit: 'contain'
+                                             }}
+                                          />
+                                       </div>
+                                    </div>
+                                 ))}
+                              </div>
+                           </div>
+
                            <div className="input-group">
                               <div className="section-label">Or Enter UPI ID</div>
                               <div className="input-wrapper">
