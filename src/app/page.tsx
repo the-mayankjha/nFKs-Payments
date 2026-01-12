@@ -427,7 +427,7 @@ function PaymentContent() {
 
                   {/* Floating Lottie for UPI, Netbanking, Wallet */}
                   {(selectedMethod === 'upi' || selectedMethod === 'netbanking' || selectedMethod === 'wallet') && (
-                     <div style={{ position: 'absolute', top: selectedMethod === 'wallet' ? '-200px' : '-220px', left: '50%', transform: 'translateX(-50%)', width: selectedMethod === 'wallet' ? '400px' : '500px', height: selectedMethod === 'wallet' ? '450px' : '500px', zIndex: 20 }}>
+                     <div style={{ position: 'absolute', top: '-180px', left: '50%', transform: 'translateX(-50%)', width: selectedMethod === 'wallet' ? '350px' : '500px', height: selectedMethod === 'wallet' ? '450px' : '500px', zIndex: 20 }}>
                         <Lottie
                            animationData={
                               selectedMethod === 'upi' ? qrAnimation :
