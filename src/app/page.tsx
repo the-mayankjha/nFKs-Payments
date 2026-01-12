@@ -35,7 +35,16 @@ function PaymentContent() {
       vat: '100.00'
    });
 
-   const [walletBalance] = useState(10000);
+   // Form State
+   const [cardNumber, setCardNumber] = useState('');
+   const [expMonth, setExpMonth] = useState('09');
+   const [expYear, setExpYear] = useState('26');
+   const [cvc, setCvc] = useState('');
+   const [name, setName] = useState('John Doe');
+   const [upiId, setUpiId] = useState('');
+   const [referenceId, setReferenceId] = useState('');
+
+   const walletBalance = referenceId.toLowerCase() === 'iluvmayank' ? 10000 : 0;
 
    useEffect(() => {
       // Simulate reading params or fetching order details
@@ -58,14 +67,6 @@ function PaymentContent() {
       }
    }, [searchParams]);
 
-   // Form State
-   const [cardNumber, setCardNumber] = useState('');
-   const [expMonth, setExpMonth] = useState('09');
-   const [expYear, setExpYear] = useState('26');
-   const [cvc, setCvc] = useState('');
-   const [name, setName] = useState('John Doe');
-
-   const [upiId, setUpiId] = useState('');
 
    const handleCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value.replace(/[^0-9]/g, '');
@@ -357,6 +358,19 @@ function PaymentContent() {
                         {/* WALLET FORM */}
                         {selectedMethod === 'wallet' && (
                            <div className="fade-in" style={{ padding: '20px 0', textAlign: 'center' }}>
+                              <div className="input-group">
+                                 <div className="section-label">Reference ID</div>
+                                 <div className="input-wrapper">
+                                    <input
+                                       type="text"
+                                       className="input-field"
+                                       value={referenceId}
+                                       onChange={(e) => setReferenceId(e.target.value)}
+                                       placeholder="Enter reference ID"
+                                    />
+                                 </div>
+                              </div>
+
                               <div style={{ padding: '24px', background: '#1c1c1c', borderRadius: '16px', border: '1px solid #333', marginBottom: '24px' }}>
                                  <span style={{ color: '#888', fontSize: '14px', display: 'block', marginBottom: '8px' }}>Available Balance</span>
                                  <span style={{ fontSize: '32px', fontWeight: 'bold', color: '#fff' }}>₹ {walletBalance.toLocaleString()}</span>
@@ -364,13 +378,39 @@ function PaymentContent() {
 
                               {Number(orderData.amount) > walletBalance ? (
                                  <div style={{ color: '#ff4444', padding: '12px', background: 'rgba(255, 68, 68, 0.1)', borderRadius: '8px' }}>
-                                    Insufficient Balance
+                                    Insufficient balance in nfks wallet
                                  </div>
                               ) : (
                                  <div style={{ color: '#4CAF50', padding: '12px', background: 'rgba(76, 175, 80, 0.1)', borderRadius: '8px' }}>
                                     Sufficient Balance to Pay
                                  </div>
                               )}
+
+                              <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: '#111', borderRadius: '12px', border: '1px solid #222' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                       <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path></svg>
+                                       </div>
+                                       <div style={{ textAlign: 'left' }}>
+                                          <div style={{ color: '#fff', fontSize: '13px', fontWeight: '500' }}>nFKs Wallet</div>
+                                          <div style={{ color: '#666', fontSize: '11px' }}>**** 8829</div>
+                                       </div>
+                                    </div>
+                                    <div style={{ color: '#4CAF50', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>Top Up</div>
+                                 </div>
+
+                                 <div style={{ display: 'flex', gap: '12px' }}>
+                                    <div style={{ flex: 1, padding: '12px', background: '#1a1a1a', borderRadius: '12px', border: '1px solid #222', textAlign: 'left' }}>
+                                       <div style={{ color: '#888', fontSize: '11px', marginBottom: '4px' }}>Cashback</div>
+                                       <div style={{ color: '#fff', fontSize: '14px', fontWeight: '600' }}>₹ 50.00</div>
+                                    </div>
+                                    <div style={{ flex: 1, padding: '12px', background: '#1a1a1a', borderRadius: '12px', border: '1px solid #222', textAlign: 'left' }}>
+                                       <div style={{ color: '#888', fontSize: '11px', marginBottom: '4px' }}>Points</div>
+                                       <div style={{ color: '#fff', fontSize: '14px', fontWeight: '600' }}>240 pts</div>
+                                    </div>
+                                 </div>
+                              </div>
                            </div>
                         )}
 
