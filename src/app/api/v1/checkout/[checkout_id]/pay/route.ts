@@ -120,10 +120,16 @@ export async function POST(
         // Fire and forget webhook
         sendWebhook(session.webhook_url, webhookPayload).catch(err => console.error('Webhook failed', err));
 
+        // Construct Redirect URL with params
+        const successUrl = new URL(session.redirect_urls.success);
+        successUrl.searchParams.append('status', 'success');
+        successUrl.searchParams.append('session_id', checkout_id);
+        successUrl.searchParams.append('order_id', session.order_id);
+
         return NextResponse.json({
             success: true,
             data: {
-                redirect_url: session.redirect_urls.success,
+                redirect_url: successUrl.toString(),
                 session: updatedSession
             }
         });
