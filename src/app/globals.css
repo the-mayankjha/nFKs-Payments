@@ -29,6 +29,10 @@ body {
   box-sizing: border-box;
 }
 
+main {
+  width: 100%;
+}
+
 /* Utilities */
 .flex-center {
   display: flex;
