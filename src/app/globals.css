@@ -65,6 +65,13 @@ main {
   border-bottom-left-radius: 24px;
 }
 
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
 /* Payment Methods Grid */
 .method-grid {
   display: grid;
@@ -454,6 +461,10 @@ main {
 
 /* --- MEDIA QUERIES --- */
 @media (max-width: 850px) {
+  .header-logo {
+    justify-content: center;
+  }
+
   .checkout-container {
     margin: 0;
     width: 100%;
