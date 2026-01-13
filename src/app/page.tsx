@@ -544,7 +544,7 @@ function PaymentContent() {
                         </button>
                      </form>
                   )}
-                  <div style={{ position: 'absolute', bottom: '20px', left: '50px', display: 'flex', gap: '20px', fontSize: '12px', color: '#666', fontFamily: 'var(--font-geist-mono)' }}>
+                  <div className="footer-links">
                      <span>Help</span>
                      <span>Privacy</span>
                      <span>Terms</span>
@@ -652,7 +652,7 @@ function PaymentContent() {
 
             </div>
          </main>
-         <div style={{ position: 'fixed', bottom: '20px', left: '0', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 40px', color: '#666', fontSize: '12px', pointerEvents: 'none', zIndex: 100, fontFamily: 'var(--font-geist-mono)' }}>
+         <div className="footer-copyright">
             <div>(c) 2025-26 nFKs. All Rights Reserved</div>
          </div>
       </>
