@@ -474,13 +474,7 @@ body {
   }
 
   .right-side {
-    order: 0;
-    /* Put Summary on Top */
-    padding: 30px 20px;
-    border-left: none;
-    border-bottom: 1px solid var(--border);
-    border-radius: 0;
-    min-height: auto;
+    display: none;
   }
 
   .ticket {
