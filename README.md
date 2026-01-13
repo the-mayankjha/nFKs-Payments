@@ -10,7 +10,13 @@ A modern, feature-rich payment gateway built with Next.js, offering multiple pay
 
 ### 💳 Multiple Payment Methods
 
+<img width="1710" height="988" alt="image" src="https://github.com/user-attachments/assets/b16e32ac-3485-4db5-bbd0-b3bfe756d348" />
+
+
 #### 1. **Credit/Debit Card**
+
+<img width="1710" height="990" alt="image" src="https://github.com/user-attachments/assets/b3157779-7ead-4433-ba88-3ba2861f9818" />
+
 - Real-time card number formatting with spacing
 - Interactive 3D card preview with animations
 - CVV security with masked input
@@ -19,6 +25,10 @@ A modern, feature-rich payment gateway built with Next.js, offering multiple pay
 - Chip and contactless payment indicators
 
 #### 2. **UPI / QR Code**
+
+<img width="1710" height="975" alt="image" src="https://github.com/user-attachments/assets/8f63042e-bf6e-471d-9867-85571ca16364" />
+
+
 - Dynamic QR code for instant payments
 - Support for multiple UPI apps:
   - Google Pay (GPay)
@@ -30,6 +40,10 @@ A modern, feature-rich payment gateway built with Next.js, offering multiple pay
 - Interactive app selection with hover effects
 
 #### 3. **Net Banking**
+
+<img width="1710" height="984" alt="image" src="https://github.com/user-attachments/assets/6466241a-a2b4-4f40-bf9d-431a55886616" />
+
+
 - **Custom Dropdown Component** with premium UI
 - **Country Selection** with flag icons:
   - India 🇮🇳
@@ -55,6 +69,10 @@ A modern, feature-rich payment gateway built with Next.js, offering multiple pay
 - Visual feedback with checkmarks for selected options
 
 #### 4. **Wallet Payment**
+
+<img width="1710" height="991" alt="image" src="https://github.com/user-attachments/assets/cb040a1d-4290-4c79-831a-e9ed1c197ee8" />
+
+
 - nFKs Wallet integration
 - Real-time balance display
 - Cashback and rewards points tracking
@@ -86,6 +104,10 @@ A modern, feature-rich payment gateway built with Next.js, offering multiple pay
 - **Failed Animation**: Payment failure indication
 
 #### Notification System
+
+<img width="1710" height="1006" alt="image" src="https://github.com/user-attachments/assets/a515adf4-a431-43f2-84e9-a4a49179e509" />
+
+
 - **Toast Notifications** with NotificationBar component
 - **Error Handling**:
   - Insufficient wallet balance
