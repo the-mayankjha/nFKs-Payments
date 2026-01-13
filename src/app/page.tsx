@@ -106,6 +106,36 @@ function PaymentContent() {
          return;
       }
 
+      // Check for net banking - bank server connection error
+      if (selectedMethod === 'netbanking') {
+         const bankOptions = [
+            { value: 'HDFC', label: 'HDFC Bank' },
+            { value: 'ICICI', label: 'ICICI Bank' },
+            { value: 'SBI', label: 'State Bank of India' },
+            { value: 'AXIS', label: 'Axis Bank' },
+            { value: 'KOTAK', label: 'Kotak Mahindra Bank' },
+            { value: 'PNB', label: 'Punjab National Bank' },
+            { value: 'BOB', label: 'Bank of Baroda' },
+            { value: 'YES', label: 'Yes Bank' },
+            { value: 'UNION', label: 'Union Bank of India' },
+            { value: 'BOA', label: 'Bank of America' },
+            { value: 'DEUTSCHE', label: 'Deutsche Bank' },
+            { value: 'STANDARD', label: 'Standard Bank' },
+         ];
+
+         const selectedBankOption = bankOptions.find(bank => bank.value === selectedBank);
+         const bankName = selectedBankOption ? selectedBankOption.label : 'Bank';
+
+         setNotification({
+            show: true,
+            title: 'Connection Failed',
+            message: `Connect to ${bankName} server failed. Please use other Payment Method.`,
+            type: 'error'
+         });
+         setTimeout(() => setNotification({ show: false, title: '', message: '', type: 'error' }), 5000);
+         return;
+      }
+
       setViewState('processing');
 
       // Simulate API Call
