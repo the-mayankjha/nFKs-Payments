@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.17.12",
+    "@react-pdf/renderer": "^4.3.2",
     "framer-motion": "^12.26.1",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.562.0",
+    "nanoid": "^5.1.6",
     "next": "16.1.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "resend": "^6.7.0",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/node": "^20",
