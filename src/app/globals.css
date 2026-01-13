@@ -1,11 +1,11 @@
 :root {
   --background: #000000;
   --foreground: #ffffff;
-  --primary: #ffffff; 
+  --primary: #ffffff;
   --primary-hover: #e5e5e5;
   --surface: #111111;
   --border: #333333;
-  --charcoal-black: #111111; 
+  --charcoal-black: #111111;
   --ticket-bg: #1c1c1c;
   --text-secondary: #888888;
 }
@@ -20,22 +20,34 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Prevent horizontal scroll on mobile */
+  width: 100%;
+  overflow-x: hidden;
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Utilities */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Main Modal Container */
 .checkout-container {
   display: flex;
-  width: 900px;
-  max-width: 95vw;
+  width: 100%;
+  max-width: 900px;
   background: var(--surface);
   border-radius: 24px;
-  overflow: visible; 
+  overflow: visible;
   box-shadow: 0 0 0 1px #333, 0 50px 100px -20px rgba(0, 0, 0, 1);
-  min-height: 680px; 
+  min-height: 680px;
+  margin: 20px;
+  /* Safety margin on small screens */
 }
 
 /* Left Side (Form) */
@@ -124,7 +136,7 @@ body {
 /* Right Side (The Ticket Container Area) */
 .right-side {
   flex: 1;
-  background: #050505; /* Pure black contrast for the ticket area */
+  background: #050505;
   padding: 40px;
   position: relative;
   display: flex;
@@ -134,7 +146,7 @@ body {
   border-left: 1px solid var(--border);
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
-  overflow: visible; 
+  overflow: visible;
 }
 
 /* The Ticket Itself */
@@ -145,32 +157,39 @@ body {
   border-radius: 20px;
   position: relative;
   padding: 24px;
-  padding-top: 280px; /* MASSIVE padding to push text below the card */
+  padding-top: 280px;
+  /* Padding for card visual */
   display: flex;
   flex-direction: column;
   border: 1px solid #333;
 }
 
 /* Cutout Circles */
-.ticket::before, .ticket::after {
+.ticket::before,
+.ticket::after {
   content: '';
   position: absolute;
-  bottom: 110px; 
+  bottom: 110px;
   width: 30px;
   height: 30px;
-  background: #050505; 
+  background: #050505;
   border-radius: 50%;
   z-index: 10;
 }
 
-.ticket::before { left: -15px; }
-.ticket::after { right: -15px; }
+.ticket::before {
+  left: -15px;
+}
+
+.ticket::after {
+  right: -15px;
+}
 
 /* Dashed Line */
 .ticket-divider {
   border-top: 2px dashed #444;
   margin-top: auto;
-  margin-bottom: 24px; 
+  margin-bottom: 24px;
   height: 1px;
   width: 100%;
 }
@@ -178,13 +197,13 @@ body {
 /* Floating Card Visual */
 .floating-card {
   position: absolute;
-  top: -40px; /* Less floating distance so it stays grounded */
+  top: -40px;
   left: 0;
   right: 0;
-  margin: 0 auto; /* Reliable horizontal centering */
-  width: 220px; /* Slightly narrower */
-  height: 310px; /* Fixed height */
-  background: #222; /* Dark card background */
+  margin: 0 auto;
+  width: 220px;
+  height: 310px;
+  background: #222;
   border-radius: 20px;
   padding: 24px;
   border: 1px solid #444;
@@ -282,25 +301,68 @@ body {
 }
 
 /* Inputs */
-.input-group { margin-bottom: 24px; }
-.input-wrapper { position: relative; display: flex; align-items: center; }
-.section-label { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-.sub-label { color: #666; font-size: 12px; margin-bottom: 10px; display: block; }
-.input-field { width: 100%; padding: 14px 16px; background: #0a0a0a; border: 1px solid #333; border-radius: 12px; color: #fff; font-size: 15px; outline: none; font-family: 'Inter', sans-serif; height: 50px; transition: all 0.2s }
-.input-field:focus { border-color: #fff; }
-.input-icon { position: absolute; right: 16px; color: #666; }
+.input-group {
+  margin-bottom: 24px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.section-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sub-label {
+  color: #666;
+  font-size: 12px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  height: 50px;
+  transition: all 0.2s
+}
+
+.input-field:focus {
+  border-color: #fff;
+}
+
+.input-icon {
+  position: absolute;
+  right: 16px;
+  color: #666;
+}
 
 /* Primary Button (Monochrome) */
-.btn-primary { 
-  width: 100%; 
-  padding: 18px; 
-  background: #ffffff; 
-  color: #000000; 
-  border: none; 
-  border-radius: 12px; 
-  font-size: 16px; 
-  font-weight: 600; 
-  cursor: pointer; 
+.btn-primary {
+  width: 100%;
+  padding: 18px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
   margin-top: auto;
   transition: opacity 0.2s;
 }
@@ -309,19 +371,161 @@ body {
   opacity: 0.9;
 }
 
-.row { display: flex; gap: 20px; }
-.col { flex: 1; }
+.row {
+  display: flex;
+  gap: 20px;
+}
 
-.fade-in { animation: fadeIn 0.5s ease-out forwards; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.col {
+  flex: 1;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* Spinner */
 .spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(0,0,0,0.1);
+  border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   border-top-color: #000;
   animation: spin 0.8s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* --- NEW RESPONSIVE CLASSES --- */
+.animation-container {
+  width: 800px;
+  height: 800px;
+  max-width: 100%;
+  /* Safety */
+  margin-bottom: -100px;
+}
+
+.animation-container.processing {
+  margin-bottom: -250px;
+}
+
+.animation-container.card {
+  margin-bottom: -100px;
+  padding: 30px;
+}
+
+
+.floating-lottie {
+  position: absolute;
+  top: -180px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  z-index: 20;
+}
+
+.floating-lottie.wallet {
+  top: -80px;
+  width: 350px;
+  height: 450px;
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 850px) {
+  .checkout-container {
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Full screen on mobile */
+  }
+
+  .left-side {
+    padding: 24px;
+    border-radius: 0;
+    /* Reset */
+    order: 2;
+    /* Form below ticket? Let's try Form First typically on payments, but user flow starts with select method. */
+    /* Wait, the "Right side" is Order Summary. */
+    /* Standard UX: Summary/Total at top (collapsed) or bottom. */
+    /* Let's put Form (Left) first, Summary (Right) second. */
+    order: 1;
+  }
+
+  .right-side {
+    order: 0;
+    /* Put Summary on Top */
+    padding: 30px 20px;
+    border-left: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    min-height: auto;
+  }
+
+  .ticket {
+    max-width: 100%;
+    padding-top: 220px;
+    /* Reduced top padding */
+  }
+
+  .floating-card {
+    width: 180px;
+    height: 260px;
+    top: -20px;
+  }
+
+  .fc-number {
+    font-size: 16px;
+    margin-top: 30px;
+  }
+
+  .method-grid {
+    grid-template-columns: 1fr;
+    /* Stack methods */
+  }
+
+  .floating-lottie {
+    width: 300px;
+    height: 300px;
+    top: -60px;
+  }
+
+  .floating-lottie.wallet {
+    width: 250px;
+    height: 300px;
+    top: -40px;
+  }
+
+  .animation-container {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 0px !important;
+    /* Override hardcoded style via class preference */
+    padding: 0 !important;
+  }
+
+  .row {
+    gap: 10px;
+  }
+}

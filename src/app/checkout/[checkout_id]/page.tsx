@@ -200,7 +200,7 @@ export default function CheckoutPage() {
         return (
             <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
-                    <div style={{ width: '800px', height: '800px', marginBottom: selectedMethod === 'card' ? '-100px' : '-250px', padding: selectedMethod === 'card' ? '30px' : '0px' }}>
+                    <div className={`animation-container ${selectedMethod === 'card' ? 'card' : 'processing'}`}>
                         <Lottie
                             animationData={selectedMethod === 'card' ? cardSuccessAnimation : processingAnimation}
                             loop={true}
@@ -219,7 +219,7 @@ export default function CheckoutPage() {
         return (
             <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
-                    <div style={{ width: '800px', height: '800px', marginBottom: '-250px' }}>
+                    <div className="animation-container processing">
                         <Lottie animationData={successAnimation} loop={false} autoplay={true} />
                     </div>
                     <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Payment Accepted</h1>
@@ -483,7 +483,7 @@ export default function CheckoutPage() {
 
                     {/* Right Side - Ticket UI */}
                     <div className="right-side">
-                        <div className="ticket" style={{ paddingTop: (selectedMethod && selectedMethod !== 'card') ? '280px' : undefined }}>
+                        <div className="ticket">
                             {/* Floating Card UI for Card Method */}
                             {(selectedMethod === 'card' || !selectedMethod) && (
                                 <div className="floating-card fade-in">
@@ -500,7 +500,7 @@ export default function CheckoutPage() {
 
                             {/* Floating Lottie for UPI, Netbanking, Wallet */}
                             {(selectedMethod === 'upi' || selectedMethod === 'netbanking' || selectedMethod === 'wallet') && (
-                                <div style={{ position: 'absolute', top: selectedMethod === 'wallet' ? '-80px' : '-180px', left: '50%', transform: 'translateX(-50%)', width: selectedMethod === 'wallet' ? '350px' : '500px', height: selectedMethod === 'wallet' ? '450px' : '500px', zIndex: 20 }}>
+                                <div className={`floating-lottie ${selectedMethod === 'wallet' ? 'wallet' : ''}`}>
                                     <Lottie
                                         animationData={
                                             selectedMethod === 'upi' ? qrAnimation :
