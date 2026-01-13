@@ -466,6 +466,9 @@ body {
     border-radius: 0;
     /* Reset */
     order: 2;
+    min-height: 100vh;
+    width: 100%;
+    flex: 1;
     /* Form below ticket? Let's try Form First typically on payments, but user flow starts with select method. */
     /* Wait, the "Right side" is Order Summary. */
     /* Standard UX: Summary/Total at top (collapsed) or bottom. */
