@@ -29,8 +29,10 @@ body {
   box-sizing: border-box;
 }
 
-main {
-  width: 100%;
+@media (max-width: 850px) {
+  main {
+    width: 100%;
+  }
 }
 
 /* Utilities */
