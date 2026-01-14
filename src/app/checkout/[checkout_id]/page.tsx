@@ -320,7 +320,12 @@ export default function CheckoutPage() {
 
                         {viewState === 'method-selection' && (
                             <div className="fade-in">
-                                <h3 style={{ fontSize: '18px', marginBottom: '20px', color: '#fff' }}>Select Payment Method</h3>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                                    <h3 style={{ fontSize: '18px', color: '#fff', margin: 0 }}>Select Payment Method</h3>
+                                    {session?.payment_method_preference && (
+                                        <span className="preference-badge" style={{ position: 'static', top: 'auto', right: 'auto', margin: 0 }}>Recommended</span>
+                                    )}
+                                </div>
                                 <div className="method-grid">
                                     <div
                                         className={`method-card ${session?.payment_method_preference?.type === 'card' ? 'preferred' : ''}`}
@@ -359,14 +364,14 @@ export default function CheckoutPage() {
                         )}
 
                         {viewState === 'details' && (
-                            <form onSubmit={handlePay} className="fade-in" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                            <form onSubmit={handlePay} className="fade-in" style={{ display: 'flex', flexDirection: 'column' }}>
                                 <button type="button" className="btn-back" onClick={() => setViewState('method-selection')}>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                                     Change Method
                                 </button>
 
                                 {selectedMethod === 'card' && (
-                                    <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                    <div className="fade-in" style={{ display: 'flex', flexDirection: 'column' }}>
                                         {session?.payment_method_preference?.type === 'card' && session?.payment_method_preference?.card_last4 && (
                                             <div className="saved-card-tile">
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -422,7 +427,7 @@ export default function CheckoutPage() {
                                 )}
 
                                 {selectedMethod === 'upi' && (
-                                    <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                    <div className="fade-in" style={{ display: 'flex', flexDirection: 'column' }}>
                                         <div style={{ textAlign: 'center', marginBottom: '24px', padding: '20px', background: '#0a0a0a', borderRadius: '16px', border: '1px solid #333' }}>
                                             <div style={{ width: '200px', height: '200px', background: '#fff', margin: '0 auto 16px', padding: '10px' }}>
                                                 <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -522,7 +527,7 @@ export default function CheckoutPage() {
                                 )}
 
                                 {selectedMethod === 'wallet' && (
-                                    <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                    <div className="fade-in" style={{ display: 'flex', flexDirection: 'column' }}>
                                         <div className="input-group">
                                             <div className="section-label">Reference ID</div>
                                             <div className="input-wrapper">
@@ -541,7 +546,7 @@ export default function CheckoutPage() {
                                             <span style={{ fontSize: '32px', fontWeight: 'bold', color: '#fff' }}>₹ {walletBalance.toLocaleString()}</span>
                                         </div>
 
-                                        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '20px' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '20px' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: '#111', borderRadius: '12px', border: '1px solid #222' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                                     <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -570,7 +575,7 @@ export default function CheckoutPage() {
                                 )}
 
                                 {selectedMethod === 'netbanking' && (
-                                    <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                    <div className="fade-in" style={{ display: 'flex', flexDirection: 'column' }}>
                                         <CustomDropdown
                                             label="Select Country"
                                             placeholder="Choose your country..."

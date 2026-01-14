@@ -277,7 +277,7 @@ function PaymentContent() {
                   )}
 
                   {viewState === 'details' && (
-                     <form onSubmit={handlePay} className="fade-in" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                     <form onSubmit={handlePay} className="fade-in" style={{ display: 'flex', flexDirection: 'column' }}>
                         <button type="button" className="btn-back" onClick={() => setViewState('method-selection')}>
                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                            Change Method
@@ -570,7 +570,7 @@ function PaymentContent() {
                            </div>
                         )}
 
-                        <button type="submit" className="btn-primary" style={{ marginTop: 'auto', marginBottom: '40px' }}>
+                        <button type="submit" className="btn-primary" style={{ marginBottom: '24px' }}>
                            Proceed
                         </button>
                      </form>

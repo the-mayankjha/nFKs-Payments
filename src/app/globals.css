@@ -411,7 +411,7 @@ body {
   font-size: 16px;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .btn-primary:hover {
@@ -597,6 +597,7 @@ body {
     transform: scale(1.0);
   }
 }
+
 /* Dynamic Preference Styles */
 .method-card.preferred {
   border-color: #4CAF50 !important;
@@ -615,7 +616,7 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .saved-input-badge {
@@ -636,21 +637,21 @@ body {
 }
 
 .saved-card-tile {
-    background: #0a0a0a;
-    border: 1px solid #333;
-    border-radius: 16px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-bottom: 24px;
-    border: 1px solid #4CAF50;
-    background: rgba(76, 175, 80, 0.05);
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 24px;
+  border: 1px solid #4CAF50;
+  background: rgba(76, 175, 80, 0.05);
 }
 
 .saved-card-tile:hover {
-    transform: translateY(-2px);
-    background: rgba(76, 175, 80, 0.1);
+  transform: translateY(-2px);
+  background: rgba(76, 175, 80, 0.1);
 }
