@@ -16,7 +16,7 @@ import successAnimation from '@/assets/lottie/success.json';
 import failedAnimation from '@/assets/lottie/failed.json';
 import qrAnimation from '@/assets/lottie/qr.json';
 import bankAnimation from '@/assets/lottie/bank.json';
-import moneyAnimation from '@/assets/lottie/money.json';
+import rocketAnimation from '@/assets/lottie/rocket.json';
 
 // Dynamic import for lottie-react
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
@@ -255,7 +255,7 @@ export default function CheckoutPage() {
             <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
                     <div className="animation-container processing">
-                        <Lottie animationData={moneyAnimation} loop={true} autoplay={true} />
+                        <Lottie animationData={rocketAnimation} loop={true} autoplay={true} />
                     </div>
                     <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Redirecting...</h1>
                     <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Taking you back to {session.metadata?.app_name || 'Merchant'}</p>
