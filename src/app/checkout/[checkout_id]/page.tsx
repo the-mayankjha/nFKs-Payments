@@ -8,19 +8,20 @@ import NotificationBar from '@/components/NotificationBar';
 import CustomDropdown from '@/components/CustomDropdown';
 import { CheckoutSession } from '@/types/checkout';
 
-// Assets (Relative paths to ensure loading)
-import walletAnimation from '../../../assets/lottie/wallet.json';
-import cardSuccessAnimation from '../../../assets/lottie/cardsuccess.json';
-import processingAnimation from '../../../assets/lottie/proccessing.json';
-import successAnimation from '../../../assets/lottie/success.json';
-import failedAnimation from '../../../assets/lottie/failed.json';
-import qrAnimation from '../../../assets/lottie/qr.json';
-import bankAnimation from '../../../assets/lottie/bank.json';
+// Assets (Standardized imports)
+import walletAnimation from '@/assets/lottie/wallet.json';
+import cardSuccessAnimation from '@/assets/lottie/cardsuccess.json';
+import processingAnimation from '@/assets/lottie/proccessing.json';
+import successAnimation from '@/assets/lottie/success.json';
+import failedAnimation from '@/assets/lottie/failed.json';
+import qrAnimation from '@/assets/lottie/qr.json';
+import bankAnimation from '@/assets/lottie/bank.json';
+import moneyAnimation from '@/assets/lottie/money.json';
 
 // Dynamic import for lottie-react
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
-type ViewState = 'loading' | 'method-selection' | 'details' | 'processing' | 'success' | 'failed' | 'expired';
+type ViewState = 'loading' | 'method-selection' | 'details' | 'processing' | 'success' | 'failed' | 'expired' | 'redirecting';
 
 export default function CheckoutPage() {
     const params = useParams();
@@ -74,6 +75,22 @@ export default function CheckoutPage() {
             fetchSession();
         }
     }, [checkout_id]);
+
+    // 2. Redirection Logic
+    useEffect(() => {
+        if (viewState === 'success' && session) {
+            const timer = setTimeout(() => {
+                setViewState('redirecting');
+            }, 3000); // Show success message for 3 seconds
+            return () => clearTimeout(timer);
+        }
+        if (viewState === 'redirecting' && session) {
+            const timer = setTimeout(() => {
+                window.location.href = session.redirect_urls.success;
+            }, 3000); // Show redirecting animation for 3 seconds
+            return () => clearTimeout(timer);
+        }
+    }, [viewState, session]);
 
     const handleCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value.replace(/[^0-9]/g, '');
@@ -225,6 +242,29 @@ export default function CheckoutPage() {
                     <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Payment Accepted</h1>
                     <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Your subscription is now active!</p>
                     <button className="btn-primary" style={{ maxWidth: '300px' }} onClick={() => window.location.href = session.redirect_urls.success}>
+                        Return to {session.metadata?.app_name || 'Merchant'}
+                    </button>
+                </div>
+            </main>
+        );
+    }
+
+    // Redirecting
+    if (viewState === 'redirecting') {
+        return (
+            <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
+                    <div className="animation-container processing">
+                        <Lottie animationData={moneyAnimation} loop={true} autoplay={true} />
+                    </div>
+                    <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Redirecting...</h1>
+                    <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Taking you back to {session.metadata?.app_name || 'Merchant'}</p>
+                    <div className="loading-dots" style={{ display: 'flex', gap: '8px' }}>
+                        <div className="dot" style={{ width: '8px', height: '8px', background: '#fff', borderRadius: '50%', animation: 'bounce 1.4s infinite ease-in-out both' }}></div>
+                        <div className="dot" style={{ width: '8px', height: '8px', background: '#fff', borderRadius: '50%', animation: 'bounce 1.4s infinite ease-in-out both', animationDelay: '0.16s' }}></div>
+                        <div className="dot" style={{ width: '8px', height: '8px', background: '#fff', borderRadius: '50%', animation: 'bounce 1.4s infinite ease-in-out both', animationDelay: '0.32s' }}></div>
+                    </div>
+                    <button className="btn-primary" style={{ maxWidth: '300px', marginTop: '40px' }} onClick={() => window.location.href = session.redirect_urls.success}>
                         Return to {session.metadata?.app_name || 'Merchant'}
                     </button>
                 </div>

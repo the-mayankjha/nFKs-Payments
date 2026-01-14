@@ -653,7 +653,7 @@ function PaymentContent() {
             </div>
          </main>
          <div className="footer-copyright">
-            <div>&copy; 2025-26 nFKs. All Rights Reserved</div>
+            <div>© 2025-26 nFKs. All Rights Reserved</div>
          </div>
       </>
    );
