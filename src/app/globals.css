@@ -462,15 +462,14 @@ body {
 
 /* --- NEW RESPONSIVE CLASSES --- */
 .animation-container {
-  width: 800px;
-  height: 800px;
+  width: 500px;
+  height: 500px;
   max-width: 100%;
-  /* Safety */
-  margin-bottom: -100px;
+  margin-bottom: -40px;
 }
 
 .animation-container.processing {
-  margin-bottom: -250px;
+  margin-bottom: -80px;
 }
 
 .animation-container.card {

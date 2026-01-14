@@ -366,7 +366,7 @@ function PaymentContent() {
 
                         {/* UPI FORM */}
                         {selectedMethod === 'upi' && (
-                           <div className="fade-in">
+                           <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                               <div style={{ textAlign: 'center', marginBottom: '24px', padding: '20px', background: '#0a0a0a', borderRadius: '16px', border: '1px solid #333' }}>
                                  <div style={{ width: '200px', height: '200px', background: '#fff', margin: '0 auto 16px', padding: '10px' }}>
                                     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -437,7 +437,7 @@ function PaymentContent() {
 
                         {/* WALLET FORM */}
                         {selectedMethod === 'wallet' && (
-                           <div className="fade-in" style={{ padding: '20px 0', textAlign: 'center' }}>
+                           <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                               <div className="input-group">
                                  <div className="section-label">Reference ID</div>
                                  <div className="input-wrapper">
@@ -458,7 +458,7 @@ function PaymentContent() {
 
 
 
-                              <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                              <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '20px' }}>
                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: '#111', borderRadius: '12px', border: '1px solid #222' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -488,7 +488,7 @@ function PaymentContent() {
 
                         {/* NET BANKING FORM */}
                         {selectedMethod === 'netbanking' && (
-                           <div className="fade-in">
+                           <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                               {/* Country Selection */}
                               <CustomDropdown
                                  label="Select Country"
@@ -529,7 +529,7 @@ function PaymentContent() {
 
                               {/* Instructions */}
                               {selectedBank && (
-                                 <div style={{ padding: '16px', background: '#0a0a0a', borderRadius: '12px', border: '1px solid #333', marginTop: '16px' }}>
+                                 <div style={{ padding: '16px', background: '#0a0a0a', borderRadius: '12px', border: '1px solid #333', marginTop: '16px', marginBottom: '20px' }}>
                                     <div style={{ color: '#888', fontSize: '13px', lineHeight: '1.6' }}>
                                        <strong style={{ color: '#fff', display: 'block', marginBottom: '8px' }}>To complete your payment:</strong>
                                        You will be redirected to {selectedBank} secure payment page to complete the transaction.

@@ -254,7 +254,7 @@ export default function CheckoutPage() {
         return (
             <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
-                    <div className="animation-container processing">
+                    <div className="animation-container processing" style={{ width: '400px', height: '400px' }}>
                         <Lottie animationData={rocketAnimation} loop={true} autoplay={true} />
                     </div>
                     <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Redirecting...</h1>
@@ -364,7 +364,7 @@ export default function CheckoutPage() {
                                 )}
 
                                 {selectedMethod === 'upi' && (
-                                    <div className="fade-in">
+                                    <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                                         <div style={{ textAlign: 'center', marginBottom: '24px', padding: '20px', background: '#0a0a0a', borderRadius: '16px', border: '1px solid #333' }}>
                                             <div style={{ width: '200px', height: '200px', background: '#fff', margin: '0 auto 16px', padding: '10px' }}>
                                                 <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -428,7 +428,7 @@ export default function CheckoutPage() {
                                 )}
 
                                 {selectedMethod === 'wallet' && (
-                                    <div className="fade-in" style={{ padding: '20px 0', textAlign: 'center' }}>
+                                    <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                                         <div className="input-group">
                                             <div className="section-label">Reference ID</div>
                                             <div className="input-wrapper">
@@ -447,7 +447,7 @@ export default function CheckoutPage() {
                                             <span style={{ fontSize: '32px', fontWeight: 'bold', color: '#fff' }}>₹ {walletBalance.toLocaleString()}</span>
                                         </div>
 
-                                        <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '20px' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: '#111', borderRadius: '12px', border: '1px solid #222' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                                     <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -476,7 +476,7 @@ export default function CheckoutPage() {
                                 )}
 
                                 {selectedMethod === 'netbanking' && (
-                                    <div className="fade-in">
+                                    <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                                         <CustomDropdown
                                             label="Select Country"
                                             placeholder="Choose your country..."
