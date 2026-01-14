@@ -539,7 +539,7 @@ function PaymentContent() {
                            </div>
                         )}
 
-                        <button type="submit" className="btn-primary" style={{ marginTop: 'auto' }}>
+                        <button type="submit" className="btn-primary">
                            Proceed
                         </button>
                      </form>

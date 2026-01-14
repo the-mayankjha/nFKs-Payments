@@ -514,7 +514,7 @@ export default function CheckoutPage() {
                                     </div>
                                 )}
 
-                                <button type="submit" className="btn-primary" style={{ marginTop: 'auto' }}>
+                                <button type="submit" className="btn-primary">
                                     Pay {session.currency} {session.amount}
                                 </button>
                             </form>
