@@ -539,12 +539,12 @@ function PaymentContent() {
                            </div>
                         )}
 
-                        <button type="submit" className="btn-primary">
+                        <button type="submit" className="btn-primary" style={{ marginTop: 'auto' }}>
                            Proceed
                         </button>
                      </form>
                   )}
-                  <div className="footer-links" style={{ position: 'absolute', bottom: '20px', left: '50px' }}>
+                  <div className="footer-links" style={{ position: 'absolute', bottom: '24px', left: '50px' }}>
                      <span>Help</span>
                      <span>Privacy</span>
                      <span>Terms</span>
@@ -555,7 +555,7 @@ function PaymentContent() {
                <div className="right-side">
 
                   {/* The Ticket Container */}
-                  <div className="ticket" style={{ paddingTop: '280px' }}>
+                  <div className="ticket">
 
                      {/* Floating Vertical Card - Only show on Card Method or Default */}
                      {(selectedMethod === 'card' || selectedMethod === null) && (
@@ -573,7 +573,7 @@ function PaymentContent() {
                                  </svg>
                               </div>
 
-                              <div style={{ marginTop: 'auto', marginBottom: '24px' }}>
+                              <div style={{ marginTop: 'auto', marginBottom: '24px', paddingBottom: '20px' }}>
                                  <div className="fc-name">{name || 'Jonathan Michael'}</div>
                                  <div className="fc-number">••••   {cardNumber.slice(-4) || '3456'}</div>
                               </div>
@@ -594,7 +594,7 @@ function PaymentContent() {
                      {/* Floating Lottie for UPI, Netbanking, Wallet */}
                      {(selectedMethod === 'upi' || selectedMethod === 'netbanking' || selectedMethod === 'wallet') && (
                         <div className="floating-lottie-container fade-in">
-                           <div style={{ width: selectedMethod === 'wallet' ? '300px' : '480px', height: selectedMethod === 'wallet' ? '380px' : '480px' }}>
+                           <div style={{ width: selectedMethod === 'wallet' ? '280px' : '380px', height: selectedMethod === 'wallet' ? '380px' : '380px', position: 'relative', top: '-20px' }}>
                               <Lottie
                                  animationData={
                                     selectedMethod === 'upi' ? qrAnimation :
@@ -649,7 +649,7 @@ function PaymentContent() {
 
                   </div>
 
-                  <div style={{ position: 'absolute', bottom: '20px', right: '40px', fontSize: '12px', color: '#666', fontFamily: 'var(--font-geist-mono)' }}>
+                  <div style={{ position: 'absolute', bottom: '24px', right: '40px', fontSize: '11px', color: '#666', fontFamily: 'var(--font-geist-mono)', opacity: 0.8 }}>
                      Developed by Mayank Kumar Jha
                   </div>
                </div>

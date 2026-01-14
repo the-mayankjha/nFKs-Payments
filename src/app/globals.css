@@ -189,17 +189,16 @@ body {
 
 /* The Ticket Itself */
 .ticket {
-  width: 100%;
-  max-width: 320px;
+  width: 320px;
   background: #1c1c1c;
   border-radius: 20px;
   position: relative;
   padding: 24px;
-  padding-top: 280px;
-  /* Padding for card visual */
+  padding-top: 260px;
   display: flex;
   flex-direction: column;
   border: 1px solid #333;
+  margin-bottom: 20px;
 }
 
 /* Cutout Circles */
@@ -236,24 +235,20 @@ body {
 .floating-lottie-container {
   position: absolute;
   top: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 480px;
-  height: 480px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 420px;
   z-index: 20;
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none;
 }
 
 .floating-card {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: 220px;
-  height: 310px;
+  width: 210px;
+  height: 300px;
   background: #222;
   border-radius: 20px;
   padding: 24px;
@@ -262,7 +257,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  z-index: 20;
+  position: relative;
+  top: -20px;
 }
 
 /* White light effect at top of card (monochrome) */
