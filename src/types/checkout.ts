@@ -34,6 +34,12 @@ export interface CheckoutSession {
 
     webhook_url: string;
     metadata?: Record<string, any>;
+    payment_method_preference?: {
+        type: 'upi' | 'card';
+        upi_id?: string | null;
+        card_last4?: string | null;
+        card_expiry?: string | null;
+    };
 
     payment?: {
         transaction_id: string;
@@ -88,6 +94,12 @@ export interface CreateCheckoutRequest {
     };
     webhook_url: string;
     metadata?: Record<string, any>;
+    payment_method_preference?: {
+        type: 'upi' | 'card';
+        upi_id?: string | null;
+        card_last4?: string | null;
+        card_expiry?: string | null;
+    };
 }
 
 export interface WebhookPayload {

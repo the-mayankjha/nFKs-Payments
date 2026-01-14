@@ -65,7 +65,31 @@ export default function CheckoutPage() {
 
                 setSession(data.data);
                 setName(data.data.customer.name); // Pre-fill name
-                setViewState('method-selection');
+
+                // 3. Handle Payment Method Preference
+                if (data.data.payment_method_preference) {
+                    const pref = data.data.payment_method_preference;
+                    setSelectedMethod(pref.type);
+
+                    if (pref.type === 'upi' && pref.upi_id) {
+                        setUpiId(pref.upi_id);
+                        setUpiMode('id');
+                    }
+
+                    if (pref.type === 'card' && pref.card_last4) {
+                        setCardNumber(`**** **** **** ${pref.card_last4}`);
+                        // Optionally set month/year if available (though standard says card_expiry is string)
+                        if (pref.card_expiry) {
+                            const [m, y] = pref.card_expiry.split('/');
+                            setExpMonth(m);
+                            setExpYear(y);
+                        }
+                    }
+
+                    setViewState('details');
+                } else {
+                    setViewState('method-selection');
+                }
             } catch (error) {
                 console.error(error);
                 setNotification({ show: true, title: 'Error', message: 'Failed to load payment session', type: 'error' });
@@ -298,12 +322,24 @@ export default function CheckoutPage() {
                             <div className="fade-in">
                                 <h3 style={{ fontSize: '18px', marginBottom: '20px', color: '#fff' }}>Select Payment Method</h3>
                                 <div className="method-grid">
-                                    <div className="method-card" onClick={() => handleMethodSelect('card')}>
+                                    <div
+                                        className={`method-card ${session?.payment_method_preference?.type === 'card' ? 'preferred' : ''}`}
+                                        onClick={() => handleMethodSelect('card')}
+                                    >
+                                        {session?.payment_method_preference?.type === 'card' && (
+                                            <span className="preference-badge">Recommended</span>
+                                        )}
                                         <svg className="method-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
                                         <span className="method-title">Credit / Debit Card</span>
                                         <span className="method-desc">Pay securely with Visa, Mastercard</span>
                                     </div>
-                                    <div className="method-card" onClick={() => handleMethodSelect('upi')}>
+                                    <div
+                                        className={`method-card ${session?.payment_method_preference?.type === 'upi' ? 'preferred' : ''}`}
+                                        onClick={() => handleMethodSelect('upi')}
+                                    >
+                                        {session?.payment_method_preference?.type === 'upi' && (
+                                            <span className="preference-badge">Recommended</span>
+                                        )}
                                         <svg className="method-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                                         <span className="method-title">UPI / QR</span>
                                         <span className="method-desc">Instant payment via any UPI app</span>
@@ -331,6 +367,27 @@ export default function CheckoutPage() {
 
                                 {selectedMethod === 'card' && (
                                     <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                        {session?.payment_method_preference?.type === 'card' && session?.payment_method_preference?.card_last4 && (
+                                            <div className="saved-card-tile">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                                    <div style={{ width: '48px', height: '32px', background: '#1c1c1c', border: '1px solid #333', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="12" r="7" fill="#EB001B" fillOpacity="0.8" /><circle cx="17" cy="12" r="7" fill="#F79E1B" fillOpacity="0.8" /></svg>
+                                                    </div>
+                                                    <div>
+                                                        <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#fff' }}>•••• {session.payment_method_preference.card_last4}</div>
+                                                        <div style={{ fontSize: '11px', color: '#4CAF50', fontWeight: '600' }}>Saved Preference</div>
+                                                    </div>
+                                                </div>
+                                                <div style={{ color: '#666', fontSize: '12px' }}>
+                                                    Expires {session.payment_method_preference.card_expiry || '--/--'}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <div className="section-label" style={{ marginBottom: '16px', color: '#666', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                            {session?.payment_method_preference?.type === 'card' ? 'Or Pay with new Card' : 'Card Details'}
+                                        </div>
+
                                         <div className="input-group">
                                             <div className="section-label">Card Number</div>
                                             <div className="input-wrapper">
@@ -452,6 +509,12 @@ export default function CheckoutPage() {
                                             <div className="fade-in input-group">
                                                 <div className="input-wrapper">
                                                     <input type="text" className="input-field" value={upiId} onChange={(e) => setUpiId(e.target.value)} placeholder="username@oksbi" />
+                                                    {session?.payment_method_preference?.type === 'upi' && session?.payment_method_preference?.upi_id === upiId && (
+                                                        <div className="saved-input-badge">
+                                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                                            Saved
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         )}

@@ -35,6 +35,12 @@ const createCheckoutSchema = z.object({
     }),
     webhook_url: z.string().url(),
     metadata: z.record(z.string(), z.any()).optional(),
+    payment_method_preference: z.object({
+        type: z.enum(['upi', 'card']),
+        upi_id: z.string().nullable().optional(),
+        card_last4: z.string().nullable().optional(),
+        card_expiry: z.string().nullable().optional(),
+    }).optional(),
 });
 
 export async function POST(request: NextRequest) {
