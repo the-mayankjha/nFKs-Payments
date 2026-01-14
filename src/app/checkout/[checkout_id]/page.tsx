@@ -514,41 +514,50 @@ export default function CheckoutPage() {
                                     </div>
                                 )}
 
-                                <button type="submit" className="btn-primary" style={{ marginTop: '20px' }}>
+                                <button type="submit" className="btn-primary">
                                     Pay {session.currency} {session.amount}
                                 </button>
                             </form>
                         )}
+                        <div className="footer-links" style={{ position: 'absolute', bottom: '20px', left: '50px' }}>
+                            <span>Help</span>
+                            <span>Privacy</span>
+                            <span>Terms</span>
+                        </div>
                     </div>
 
                     {/* Right Side - Ticket UI */}
                     <div className="right-side">
-                        <div className="ticket">
+                        <div className="ticket" style={{ paddingTop: '280px' }}>
                             {/* Floating Card UI for Card Method */}
                             {(selectedMethod === 'card' || !selectedMethod) && (
-                                <div className="floating-card fade-in">
-                                    <div className="fc-top">
-                                        <Image src="/chip.png" alt="Chip" width={50} height={40} style={{ objectFit: 'contain' }} />
-                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path></svg>
-                                    </div>
-                                    <div style={{ marginTop: 'auto', marginBottom: '24px' }}>
-                                        <div className="fc-name">{name || 'Card Holder'}</div>
-                                        <div className="fc-number">•••• {cardNumber.slice(-4) || 'XXXX'}</div>
+                                <div className="floating-lottie-container fade-in">
+                                    <div className="floating-card">
+                                        <div className="fc-top">
+                                            <Image src="/chip.png" alt="Chip" width={50} height={40} style={{ objectFit: 'contain' }} />
+                                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path></svg>
+                                        </div>
+                                        <div style={{ marginTop: 'auto', marginBottom: '24px' }}>
+                                            <div className="fc-name">{name || 'Card Holder'}</div>
+                                            <div className="fc-number">•••• {cardNumber.slice(-4) || 'XXXX'}</div>
+                                        </div>
                                     </div>
                                 </div>
                             )}
 
                             {/* Floating Lottie for UPI, Netbanking, Wallet */}
                             {(selectedMethod === 'upi' || selectedMethod === 'netbanking' || selectedMethod === 'wallet') && (
-                                <div className={`floating-lottie ${selectedMethod === 'wallet' ? 'wallet' : ''}`}>
-                                    <Lottie
-                                        animationData={
-                                            selectedMethod === 'upi' ? qrAnimation :
-                                                selectedMethod === 'netbanking' ? bankAnimation :
-                                                    walletAnimation
-                                        }
-                                        loop={true}
-                                    />
+                                <div className="floating-lottie-container fade-in">
+                                    <div style={{ width: selectedMethod === 'wallet' ? '300px' : '480px', height: selectedMethod === 'wallet' ? '380px' : '480px' }}>
+                                        <Lottie
+                                            animationData={
+                                                selectedMethod === 'upi' ? qrAnimation :
+                                                    selectedMethod === 'netbanking' ? bankAnimation :
+                                                        walletAnimation
+                                            }
+                                            loop={true}
+                                        />
+                                    </div>
                                 </div>
                             )}
 
@@ -574,9 +583,12 @@ export default function CheckoutPage() {
                                 </div>
                             </div>
                         </div>
+                        <div style={{ position: 'absolute', bottom: '20px', right: '40px', fontSize: '12px', color: '#666', fontFamily: 'var(--font-geist-mono)' }}>
+                            Developed by Mayank Kumar Jha
+                        </div>
                     </div>
                 </div>
-            </main>
+            </main >
         </>
     );
 }

@@ -544,7 +544,7 @@ function PaymentContent() {
                         </button>
                      </form>
                   )}
-                  <div className="footer-links">
+                  <div className="footer-links" style={{ position: 'absolute', bottom: '20px', left: '50px' }}>
                      <span>Help</span>
                      <span>Privacy</span>
                      <span>Terms</span>
@@ -555,51 +555,55 @@ function PaymentContent() {
                <div className="right-side">
 
                   {/* The Ticket Container */}
-                  <div className="ticket" style={{ paddingTop: (selectedMethod === 'wallet' || selectedMethod === 'upi' || selectedMethod === 'netbanking') ? '280px' : undefined }}>
+                  <div className="ticket" style={{ paddingTop: '280px' }}>
 
                      {/* Floating Vertical Card - Only show on Card Method or Default */}
                      {(selectedMethod === 'card' || selectedMethod === null) && (
-                        <div className="floating-card fade-in">
-                           <div className="fc-top">
-                              <div style={{ position: 'relative', width: '50px', height: '40px' }}>
-                                 <Image src="/chip.png" alt="Chip" fill style={{ objectFit: 'contain' }} />
+                        <div className="floating-lottie-container fade-in">
+                           <div className="floating-card">
+                              <div className="fc-top">
+                                 <div style={{ position: 'relative', width: '50px', height: '40px' }}>
+                                    <Image src="/chip.png" alt="Chip" fill style={{ objectFit: 'contain' }} />
+                                 </div>
+                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                                    <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                                    <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                                 </svg>
                               </div>
-                              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                 <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
-                                 <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
-                                 <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
-                                 <line x1="12" y1="20" x2="12.01" y2="20"></line>
-                              </svg>
-                           </div>
 
-                           <div style={{ marginTop: 'auto', marginBottom: '24px' }}>
-                              <div className="fc-name">{name || 'Jonathan Michael'}</div>
-                              <div className="fc-number">••••   {cardNumber.slice(-4) || '3456'}</div>
-                           </div>
-
-                           <div className="fc-bottom">
-                              <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff' }}>
-                                 {expMonth}/{expYear}
+                              <div style={{ marginTop: 'auto', marginBottom: '24px' }}>
+                                 <div className="fc-name">{name || 'Jonathan Michael'}</div>
+                                 <div className="fc-number">••••   {cardNumber.slice(-4) || '3456'}</div>
                               </div>
-                              <svg width="40" height="25" viewBox="0 0 24 24" fill="none">
-                                 <circle cx="7" cy="12" r="7" fill="#EB001B" fillOpacity="0.9" />
-                                 <circle cx="17" cy="12" r="7" fill="#F79E1B" fillOpacity="0.9" />
-                              </svg>
+
+                              <div className="fc-bottom">
+                                 <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff' }}>
+                                    {expMonth}/{expYear}
+                                 </div>
+                                 <svg width="40" height="25" viewBox="0 0 24 24" fill="none">
+                                    <circle cx="7" cy="12" r="7" fill="#EB001B" fillOpacity="0.9" />
+                                    <circle cx="17" cy="12" r="7" fill="#F79E1B" fillOpacity="0.9" />
+                                 </svg>
+                              </div>
                            </div>
                         </div>
                      )}
 
                      {/* Floating Lottie for UPI, Netbanking, Wallet */}
                      {(selectedMethod === 'upi' || selectedMethod === 'netbanking' || selectedMethod === 'wallet') && (
-                        <div style={{ position: 'absolute', top: selectedMethod === 'wallet' ? '-80px' : '-180px', left: '50%', transform: 'translateX(-50%)', width: selectedMethod === 'wallet' ? '350px' : '500px', height: selectedMethod === 'wallet' ? '450px' : '500px', zIndex: 20 }}>
-                           <Lottie
-                              animationData={
-                                 selectedMethod === 'upi' ? qrAnimation :
-                                    selectedMethod === 'netbanking' ? bankAnimation :
-                                       walletAnimation
-                              }
-                              loop={true}
-                           />
+                        <div className="floating-lottie-container fade-in">
+                           <div style={{ width: selectedMethod === 'wallet' ? '300px' : '480px', height: selectedMethod === 'wallet' ? '380px' : '480px' }}>
+                              <Lottie
+                                 animationData={
+                                    selectedMethod === 'upi' ? qrAnimation :
+                                       selectedMethod === 'netbanking' ? bankAnimation :
+                                          walletAnimation
+                                 }
+                                 loop={true}
+                              />
+                           </div>
                         </div>
                      )}
 

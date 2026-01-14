@@ -45,15 +45,13 @@ body {
 /* Main Modal Container */
 .checkout-container {
   display: flex;
-  width: 100%;
-  max-width: 900px;
+  width: 900px;
+  height: 720px;
   background: var(--surface);
   border-radius: 24px;
   overflow: visible;
   box-shadow: 0 0 0 1px #333, 0 50px 100px -20px rgba(0, 0, 0, 1);
-  min-height: 680px;
   margin: 20px;
-  /* Safety margin on small screens */
 }
 
 /* Left Side (Form) */
@@ -234,7 +232,20 @@ body {
   width: 100%;
 }
 
-/* Floating Card Visual */
+/* Floating Container for Lottie/Card */
+.floating-lottie-container {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px;
+  height: 480px;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .floating-card {
   position: absolute;
   top: -40px;
@@ -395,16 +406,16 @@ body {
 /* Primary Button (Monochrome) */
 .btn-primary {
   width: 100%;
-  padding: 18px;
   background: #ffffff;
-  color: #000000;
+  color: #000;
   border: none;
   border-radius: 12px;
+  padding: 16px;
+  font-weight: bold;
   font-size: 16px;
-  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
   margin-top: auto;
-  transition: opacity 0.2s;
 }
 
 .btn-primary:hover {
@@ -505,10 +516,11 @@ body {
     margin: 0;
     width: 100%;
     max-width: 100%;
+    height: auto;
+    min-height: 100vh;
     border-radius: 0;
     box-shadow: none;
     flex-direction: column;
-    min-height: 100vh;
     /* Full screen on mobile */
   }
 
