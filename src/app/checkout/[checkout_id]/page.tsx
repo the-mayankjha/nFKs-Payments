@@ -323,7 +323,17 @@ export default function CheckoutPage() {
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                                     <h3 style={{ fontSize: '18px', color: '#fff', margin: 0 }}>Select Payment Method</h3>
                                     {session?.payment_method_preference && (
-                                        <span className="preference-badge" style={{ position: 'static', top: 'auto', right: 'auto', margin: 0 }}>Recommended</span>
+                                        <div style={{
+                                            background: '#4CAF50',
+                                            color: '#fff',
+                                            padding: '3px 10px',
+                                            borderRadius: '20px',
+                                            fontSize: '10px',
+                                            fontWeight: '700',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.5px',
+                                            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                                        }}>Recommended</div>
                                     )}
                                 </div>
                                 <div className="method-grid">
@@ -331,9 +341,6 @@ export default function CheckoutPage() {
                                         className={`method-card ${session?.payment_method_preference?.type === 'card' ? 'preferred' : ''}`}
                                         onClick={() => handleMethodSelect('card')}
                                     >
-                                        {session?.payment_method_preference?.type === 'card' && (
-                                            <span className="preference-badge">Recommended</span>
-                                        )}
                                         <svg className="method-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
                                         <span className="method-title">Credit / Debit Card</span>
                                         <span className="method-desc">Pay securely with Visa, Mastercard</span>
@@ -342,9 +349,6 @@ export default function CheckoutPage() {
                                         className={`method-card ${session?.payment_method_preference?.type === 'upi' ? 'preferred' : ''}`}
                                         onClick={() => handleMethodSelect('upi')}
                                     >
-                                        {session?.payment_method_preference?.type === 'upi' && (
-                                            <span className="preference-badge">Recommended</span>
-                                        )}
                                         <svg className="method-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                                         <span className="method-title">UPI / QR</span>
                                         <span className="method-desc">Instant payment via any UPI app</span>
