@@ -96,7 +96,7 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 /* Payment Methods Grid */
