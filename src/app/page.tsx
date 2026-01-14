@@ -349,7 +349,7 @@ function PaymentContent() {
                                           placeholder="MM"
                                        />
                                     </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#666' }}>/</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '18px', color: '#666' }}>/</div>
                                     <div className="input-wrapper col">
                                        <input
                                           type="text"

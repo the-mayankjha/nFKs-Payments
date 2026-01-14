@@ -389,7 +389,7 @@ export default function CheckoutPage() {
                                             </div>
                                         )}
 
-                                        <div className="section-label" style={{ marginBottom: '16px', color: '#666', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                        <div className="section-label" style={{ marginBottom: '12px', color: '#666', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>
                                             {session?.payment_method_preference?.type === 'card' ? 'Or Pay with new Card' : 'Card Details'}
                                         </div>
 
@@ -414,7 +414,7 @@ export default function CheckoutPage() {
                                                 <div className="input-wrapper col">
                                                     <input type="text" className="input-field" value={expMonth} onChange={(e) => setExpMonth(e.target.value)} placeholder="MM" style={{ textAlign: 'center' }} />
                                                 </div>
-                                                <span style={{ color: '#666', fontSize: '24px' }}>/</span>
+                                                <span style={{ color: '#666', fontSize: '18px' }}>/</span>
                                                 <div className="input-wrapper col">
                                                     <input type="text" className="input-field" value={expYear} onChange={(e) => setExpYear(e.target.value)} placeholder="YY" style={{ textAlign: 'center' }} />
                                                 </div>

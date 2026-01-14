@@ -349,7 +349,7 @@ body {
 
 /* Inputs */
 .input-group {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 .input-wrapper {
@@ -362,7 +362,7 @@ body {
   font-size: 14px;
   font-weight: 600;
   color: #fff;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -385,7 +385,7 @@ body {
   font-size: 15px;
   outline: none;
   font-family: 'Inter', sans-serif;
-  height: 50px;
+  height: 44px;
   transition: all 0.2s
 }
 
@@ -411,7 +411,7 @@ body {
   font-size: 16px;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 .btn-primary:hover {
@@ -420,7 +420,7 @@ body {
 
 .row {
   display: flex;
-  gap: 20px;
+  gap: 12px;
 }
 
 .col {
