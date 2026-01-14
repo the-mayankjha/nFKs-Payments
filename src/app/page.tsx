@@ -284,7 +284,7 @@ function PaymentContent() {
 
                         {/* CARD FORM */}
                         {selectedMethod === 'card' && (
-                           <>
+                           <div className="fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                               <div className="input-group">
                                  <div className="section-label">
                                     <span>Card Number</span>
@@ -361,7 +361,7 @@ function PaymentContent() {
                                     </div>
                                  </div>
                               </div>
-                           </>
+                           </div>
                         )}
 
                         {/* UPI FORM */}
@@ -539,7 +539,7 @@ function PaymentContent() {
                            </div>
                         )}
 
-                        <button type="submit" className="btn-primary">
+                        <button type="submit" className="btn-primary" style={{ marginTop: 'auto', marginBottom: '40px' }}>
                            Proceed
                         </button>
                      </form>
