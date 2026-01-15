@@ -102,17 +102,40 @@ export default function CheckoutPage() {
     }, [checkout_id]);
 
     // 2. Redirection Logic
+    // Active tracking ref for Beacon
+    const isTransactionActive = React.useRef(true);
+    useEffect(() => {
+        if (viewState === 'success' || viewState === 'processing' || viewState === 'failed' || viewState === 'redirecting') {
+            isTransactionActive.current = false;
+        } else {
+            isTransactionActive.current = true;
+        }
+    }, [viewState]);
+
+    useEffect(() => {
+        const handlePageExit = () => {
+            if (isTransactionActive.current) {
+                // User is leaving while active -> CANCEL via Beacon (fire and forget)
+                const cancelUrl = `/api/v1/checkout/${checkout_id}/cancel`;
+                navigator.sendBeacon(cancelUrl);
+            }
+        };
+
+        window.addEventListener('pagehide', handlePageExit);
+        return () => window.removeEventListener('pagehide', handlePageExit);
+    }, [checkout_id]);
+
     useEffect(() => {
         if (viewState === 'success' && session) {
             const timer = setTimeout(() => {
                 setViewState('redirecting');
-            }, 3000); // Show success message for 3 seconds
+            }, 3000);
             return () => clearTimeout(timer);
         }
         if (viewState === 'redirecting' && session) {
             const timer = setTimeout(() => {
                 window.location.href = session.redirect_urls.success;
-            }, 3000); // Show redirecting animation for 3 seconds
+            }, 3000);
             return () => clearTimeout(timer);
         }
     }, [viewState, session]);
@@ -127,6 +150,38 @@ export default function CheckoutPage() {
     const handleMethodSelect = (method: string) => {
         setSelectedMethod(method);
         setViewState('details');
+    };
+
+    // Handle Explicit User Cancellation
+    const handleCancel = async () => {
+        if (!session) return;
+
+        try {
+            setNotification({
+                show: true,
+                title: 'Cancelling...',
+                message: 'Processing cancellation request.',
+                type: 'error'
+            });
+
+            const res = await fetch(`/api/v1/checkout/${checkout_id}/cancel`, {
+                method: 'POST'
+            });
+
+            const data = await res.json();
+
+            if (data.data?.redirect_url) {
+                window.location.href = data.data.redirect_url;
+            } else {
+                window.location.href = session.redirect_urls.failure;
+            }
+        } catch (error) {
+            console.error('Cancellation failed:', error);
+            const failUrl = new URL(session.redirect_urls.failure);
+            failUrl.searchParams.append('status', 'failed');
+            failUrl.searchParams.append('reason', 'user_cancelled');
+            window.location.href = failUrl.toString();
+        }
     };
 
     const handlePay = async (e: React.FormEvent) => {

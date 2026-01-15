@@ -680,7 +680,29 @@ Expired Card:        4000 0000 0000 0069
 Invalid CVV:         4000 0000 0000 0127
 ```
 
+### Handling Defaults & Abandonment
+When a user cancels (closes tab, hits back button) or payment fails:
+
+1.  **The Gateway**:
+    *   Detects the exit via `pagehide` event (beacon).
+    *   Sends a `payment.failed` webhook with `error.code: "user_cancelled"`.
+    *   Attempting to pay with a card triggering failure redirects to `failure_url`.
+
+2.  **AyScroll Backend (Webhook)**:
+    *   Listen for `payment.failed`.
+    *   If `error.code === 'user_cancelled'`, consider sending an "Abandonment Recovery" email (optional).
+    *   If `error.code === 'insufficient_funds'`, prompt user to try another card.
+
+3.  **AyScroll Frontend**:
+    *   **Redirects**: Check URL params: `?status=failed&reason=...`. Show a Toast notification.
+    *   **Browser Back**: The user will land on your page *without* URL params. Recommended: Re-fetch subscription status on window focus to ensure UI reflects current state (inactive).
+
 **Test Details** (use with any test card):
+- **Success**: Use a standard card.
+- **Failure**: Use card ending in `0000`.
+- **Cancel**: Close the tab or click Browser Back during checkout.
+
+### Test Details (use with any test card):
 - Expiry: Any future date (e.g., 12/28)
 - CVV: Any 3 digits (e.g., 123)
 - Name: Any name
