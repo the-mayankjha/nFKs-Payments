@@ -182,6 +182,13 @@ export default function CheckoutPage() {
             }
 
             if (!res.ok) {
+                // If the response explicitly returns a redirect_url on failure
+                if (data.data?.redirect_url) {
+                    setViewState('failed');
+                    // We don't redirect immediately to allow the user to see the "Failed" animation
+                    return;
+                }
+
                 // specific handling for already processed
                 if (data.error?.code === 'invalid_status') {
                     setViewState('details');
@@ -251,6 +258,37 @@ export default function CheckoutPage() {
                     </div>
                     <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '12px', color: '#fff' }}>Processing Transaction</h2>
                     <p style={{ color: '#94a3b8' }}>Please do not close this window...</p>
+                </div>
+            </main>
+        );
+    }
+
+    // Failure
+    if (viewState === 'failed') {
+        return (
+            <main className="fade-in" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', width: '100%' }}>
+                    <div className="animation-container processing">
+                        <Lottie animationData={failedAnimation} loop={false} autoplay={true} />
+                    </div>
+                    <h1 style={{ fontSize: '32px', marginBottom: '12px', fontWeight: 'bold', color: '#fff' }}>Payment Failed</h1>
+                    <p style={{ color: '#94a3b8', fontSize: '18px', marginBottom: '40px' }}>Something went wrong with your transaction.</p>
+                    <button className="btn-primary" style={{ maxWidth: '300px' }} onClick={() => {
+                        const failUrl = new URL(session.redirect_urls.failure);
+                        failUrl.searchParams.append('status', 'failed');
+                        failUrl.searchParams.append('plan_id', session.plan_id);
+                        failUrl.searchParams.append('amount', session.amount.toString());
+                        failUrl.searchParams.append('session_id', checkout_id);
+                        window.location.href = failUrl.toString();
+                    }}>
+                        Return to {session.metadata?.app_name || 'Merchant'}
+                    </button>
+                    <button
+                        style={{ background: 'transparent', border: 'none', color: '#666', marginTop: '20px', cursor: 'pointer', fontSize: '14px' }}
+                        onClick={() => setViewState('details')}
+                    >
+                        Try with another method
+                    </button>
                 </div>
             </main>
         );

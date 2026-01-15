@@ -2,18 +2,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { sendWebhook } from '@/lib/webhook';
 import { generateId } from '@/lib/utils';
-import { WebhookPayload } from '@/types/checkout';
+import { WebhookPayload, CheckoutSession } from '@/types/checkout';
 
 export async function POST(
     request: NextRequest,
     { params }: { params: Promise<{ checkout_id: string }> }
 ) {
+    let session: CheckoutSession | null = null;
+    const { checkout_id } = await params;
+
     try {
-        const { checkout_id } = await params;
         const body = await request.json(); // { method, details }
 
         // 1. Fetch Session
-        const session = await db.sessions.findById(checkout_id);
+        session = await db.sessions.findById(checkout_id);
+
         if (!session) {
             return NextResponse.json({ success: false, error: { code: 'not_found', message: 'Session not found' } }, { status: 404 });
         }
@@ -23,7 +26,11 @@ export async function POST(
         }
 
         // 2. Validate Payment (Simulated)
-        // In a real app, we'd check card details here, talk to Stripe/Bank, etc.
+        // Check for simulated failure trigger: Card ending in '0000'
+        if (body.details?.cardNumber?.endsWith('0000')) {
+            throw new Error('Simulated bank decline');
+        }
+
         const transaction_id = generateId('txn', 16);
 
         // 3. Update Session
@@ -32,7 +39,6 @@ export async function POST(
         // Invoice Generation
         const invoice_id = generateId('inv', 12);
         const invoice_number = `INV-2026-${Math.floor(Math.random() * 10000)}`;
-        // Dynamic URL for downloading invoice later
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://payments.nfks.co.in';
         const invoice_url = `${baseUrl}/api/v1/invoices/${invoice_id}`;
 
@@ -48,7 +54,6 @@ export async function POST(
             completed_at,
         };
 
-        // Prepare invoice data for DB update
         const invoiceData = {
             invoice_id,
             invoice_number,
@@ -64,16 +69,12 @@ export async function POST(
 
         if (!updatedSession) throw new Error('Failed to update session');
 
-        // --- NEW: Generate PDF and Send Email ---
+        // --- Generate PDF and Send Email (Side Effect) ---
         try {
-            // Import dynamically to avoid circular dependency issues if any
             const { generateInvoicePDF } = await import('@/lib/invoice');
             const { sendInvoiceEmail } = await import('@/lib/email');
-
-            // Generate PDF Stream
             const pdfStream = await generateInvoicePDF(updatedSession, invoice_number, transaction_id);
 
-            // Send Email
             await sendInvoiceEmail({
                 to: updatedSession.customer.email,
                 subject: `Payment Successful - ${updatedSession.plan_name}`,
@@ -85,13 +86,11 @@ export async function POST(
                 currency: updatedSession.currency,
                 transactionId: transaction_id
             });
-            console.log('📧 Invoice email sent/simulated successfully');
         } catch (emailErr) {
             console.error('Failed to send invoice email:', emailErr);
-            // Non-blocking error
         }
 
-        // 4. Send Webhook
+        // 4. Send Success Webhook
         const webhookPayload: WebhookPayload = {
             event: 'payment.success',
             timestamp: completed_at,
@@ -114,13 +113,12 @@ export async function POST(
                 invoice: updatedSession.invoice!,
                 metadata: session.metadata,
             },
-            signature: '', // will be set by sendWebhook
+            signature: '',
         };
 
-        // Fire and forget webhook
         sendWebhook(session.webhook_url, webhookPayload).catch(err => console.error('Webhook failed', err));
 
-        // Construct Redirect URL with params
+        // Construct Success Redirect URL
         const successUrl = new URL(session.redirect_urls.success);
         successUrl.searchParams.append('status', 'success');
         successUrl.searchParams.append('session_id', checkout_id);
@@ -134,8 +132,53 @@ export async function POST(
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Payment processing error:', error);
+
+        const errorCode = error.message === 'Simulated bank decline' ? 'insufficient_funds' : 'payment_processing_error';
+        const errorMessage = error.message || 'The transaction failed due to an unknown error.';
+
+        // Handle Failure: Send Webhook and Return Redirect URL
+        if (session) {
+            // 1. Send specific Failure Webhook as requested
+            const failurePayload: WebhookPayload = {
+                event: 'payment.failed',
+                data: {
+                    amount: session.amount,
+                    user_id: session.customer.user_id,
+                    plan_id: session.plan_id,
+                    error: {
+                        code: errorCode,
+                        message: errorMessage
+                    },
+                    metadata: {
+                        billingCycle: session.metadata?.billingCycle || 'Monthly', // Fallback or explicit
+                        order_id: session.order_id,
+                        ...session.metadata
+                    }
+                }
+            };
+
+            sendWebhook(session.webhook_url, failurePayload).catch(e => console.error("Failure Webhook failed", e));
+
+            // 2. Construct Failure Redirect URL
+            const failUrl = new URL(session.redirect_urls.failure);
+            failUrl.searchParams.append('status', 'failed');
+            failUrl.searchParams.append('plan_id', session.plan_id);
+            failUrl.searchParams.append('amount', session.amount.toString());
+            failUrl.searchParams.append('session_id', checkout_id); // Using checkout_id as session_id per convention
+            failUrl.searchParams.append('error_code', errorCode);
+
+            // Return success: false but with data.redirect_url so frontend can redirect
+            return NextResponse.json({
+                success: false,
+                data: {
+                    redirect_url: failUrl.toString()
+                },
+                error: { code: errorCode, message: errorMessage }
+            }, { status: 402 }); // 402 Payment Required is appropriate for failures
+        }
+
         return NextResponse.json({
             success: false,
             error: { code: 'payment_failed', message: 'Payment processing failed' }

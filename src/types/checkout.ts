@@ -102,45 +102,48 @@ export interface CreateCheckoutRequest {
     };
 }
 
-export interface WebhookPayload {
-    event: 'payment.success' | 'payment.failed' | 'payment.cancelled';
-    timestamp: string;
-    payment: {
-        transaction_id: string;
-        checkout_id: string;
-        order_id: string;
-        status: 'success' | 'failed' | 'cancelled';
-        amount: number;
-        currency: string;
-        payment_method: {
-            type: 'card';
-            card_brand: string;
-            last4: string;
-            expiry_month: number;
-            expiry_year: number;
+export type WebhookPayload =
+    | {
+        event: 'payment.success';
+        timestamp: string;
+        payment: {
+            transaction_id: string;
+            checkout_id: string;
+            order_id: string;
+            status: 'success';
+            amount: number;
+            currency: string;
+            payment_method: any;
+            created_at: string;
+            completed_at: string;
+            customer: any;
+            plan: any;
+            invoice: any;
+            metadata?: Record<string, any>;
         };
-        created_at: string;
-        completed_at: string;
-        customer: {
+        signature: string;
+    }
+    | {
+        event: 'payment.failed';
+        data: {
+            amount: number;
             user_id: string;
-            email: string;
-            name: string;
-        };
-        plan: {
             plan_id: string;
-            plan_name: string;
-            billing_period: {
-                start: string;
-                end: string;
+            error: {
+                code: string;
+                message: string;
+            };
+            metadata: {
+                billingCycle?: string;
+                order_id: string;
+                [key: string]: any;
             };
         };
-        invoice: {
-            invoice_id: string;
-            invoice_number: string;
-            invoice_url: string;
-            issued_at: string;
-        };
-        metadata?: Record<string, any>;
+        signature?: string;
+    }
+    | {
+        event: 'payment.cancelled';
+        timestamp: string;
+        payment: any; // Simplified for now
+        signature: string;
     };
-    signature: string;
-}
