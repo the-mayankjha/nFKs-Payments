@@ -126,6 +126,30 @@ export default function CheckoutPage() {
         return () => window.removeEventListener('pagehide', handlePageExit);
     }, [checkout_id]);
 
+    // 4. Time-based Abandonment (1 minute)
+    useEffect(() => {
+        // Only start timer if valid session and in selection/details view
+        if (!session || viewState === 'success' || viewState === 'failed' || viewState === 'processing') return;
+
+        const timeoutId = setTimeout(() => {
+            if (isTransactionActive.current) {
+                console.log(`[Checkout] Session timed out (1 min). Auto-cancelling.`);
+                navigator.sendBeacon(`/api/v1/checkout/${checkout_id}/cancel`);
+
+                // Optional: Update UI to show timeout
+                setViewState('failed');
+                setNotification({
+                    show: true,
+                    title: 'Session Expired',
+                    message: 'Your payment session timed out due to inactivity.',
+                    type: 'error'
+                });
+            }
+        }, 60000); // 1 minute
+
+        return () => clearTimeout(timeoutId);
+    }, [checkout_id, session, viewState]);
+
     useEffect(() => {
         if (viewState === 'success' && session) {
             const timer = setTimeout(() => {
