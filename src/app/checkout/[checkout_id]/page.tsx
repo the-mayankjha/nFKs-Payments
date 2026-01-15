@@ -115,6 +115,7 @@ export default function CheckoutPage() {
     useEffect(() => {
         const handlePageExit = () => {
             if (isTransactionActive.current) {
+                console.log(`[Checkout] User abandoning session ${checkout_id}. Triggering cancellation beacon.`);
                 // User is leaving while active -> CANCEL via Beacon (fire and forget)
                 const cancelUrl = `/api/v1/checkout/${checkout_id}/cancel`;
                 navigator.sendBeacon(cancelUrl);
